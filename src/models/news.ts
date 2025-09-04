@@ -8,7 +8,6 @@ type TCategory = (typeof categories)[number];
 type TNews = Document & {
     title: string;
     slug: string;
-    headline: string;
     content: string;
     imageUrl: string;
     thumbnailUrl: string;
@@ -32,11 +31,6 @@ const newsSchema = new Schema<TNews>({
         required: true,
         unique: true,
         index: true
-    },
-    headline: {
-        type: String,
-        required: true,
-        maxLength: 200
     },
     content: {
         type: String,
