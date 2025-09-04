@@ -7,14 +7,11 @@ import { connect_to_db } from './src/config/db';
 dotenv.config();
 
 
-const server = app.listen(env.port, async () => {
-    console.log("connecting to Database.........")
+const server = app.listen(env.port, 'localhost', async () => {
     await connect_to_db();
-    console.log("connected to Database successfully")
     console.log('🚀 Chatbot Backend Server Started');
-    console.log(`📍 Server running on: http://${env.host}:${env.port}`);
+    console.log(`📍 Local: http://localhost:${env.port}`);
     console.log(`🌍 Environment: ${env.nodeEnv}`);
-    console.log(`⚡ Health check: http://${env.host}:${env.port}/health`);
     console.log('─'.repeat(50));
 });
 

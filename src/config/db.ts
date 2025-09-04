@@ -11,6 +11,12 @@ if (!MONGO_URL) {
 
 
 const connect_to_db = async () => {
+    // Check if already connected
+    if (mongoose.connection.readyState === 1) {
+        console.log("Database already connected");
+        return;
+    }
+
     console.log("connecting to Database.........")
     try {
         await mongoose.connect(MONGO_URL)

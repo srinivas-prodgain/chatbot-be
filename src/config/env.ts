@@ -12,7 +12,7 @@ type TEnv = {
 }
 
 const env: TEnv = {
-    port: parseInt(process.env.PORT || '8000'),
+    port: parseInt(process.env.PORT || '3001'),
     dbUrl: process.env.DB_URL || 'NA',
     host: process.env.HOST || 'localhost',
     nodeEnv: process.env.NODE_ENV || 'development',
