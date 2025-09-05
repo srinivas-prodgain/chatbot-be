@@ -7,6 +7,7 @@ import { global_error_handler } from './middleware/global-error-handler';
 import { throw_error } from './utils/throw-error';
 import { post_router } from './routes/post';
 import { news_router } from './routes/news';
+import { help_router } from './routes/help';
 
 const app: Application = express();
 
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use('/user', user_router);
 app.use('/post', post_router);
 app.use('/news', news_router);
+app.use('/help', help_router);
 
 
 app.use('/', (req: Request, res: Response) => {

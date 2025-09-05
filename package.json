@@ -10,7 +10,12 @@
     "seed:posts": "tsx src/seeds/post-seed.ts",
     "seed:authors": "tsx src/seeds/author-seed.ts",
     "seed:news": "tsx src/seeds/news-seed.ts",
-    "seed:all": "tsx src/seeds/master-seed.ts"
+    "seed:collections": "tsx src/seeds/collection-seed.ts",
+    "seed:articles": "tsx src/seeds/article-seed.ts",
+    "seed:help": "tsx src/seeds/help-seed.ts",
+    "seed:help-expanded": "tsx src/seeds/help-seed.ts",
+    "seed:all": "tsx src/seeds/master-seed.ts",
+    "init:collection-counts": "tsx src/scripts/initialize-collection-counts.ts"
   },
   "repository": {
     "type": "git",

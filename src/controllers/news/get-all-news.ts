@@ -4,7 +4,7 @@ import { TrequestResponse } from '../../types/shared';
 
 export const get_all_news = async ({ req, res }: TrequestResponse) => {
 
-    const { page, limit } = get_all_news_schema.parse(req.query);
+    const { page, limit } = get_all_news_query_schema.parse(req.query);
 
     const news = mg.News.find({ isPublished: true })
         .select('title slug content imageUrl tags _id')
@@ -43,7 +43,7 @@ export const get_all_news = async ({ req, res }: TrequestResponse) => {
 
 }
 
-const get_all_news_schema = z.strictObject({
+const get_all_news_query_schema = z.strictObject({
     page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
     limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100))
 });

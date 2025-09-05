@@ -9,6 +9,7 @@ type TCollection = Document & {
     parentCollection?: Schema.Types.ObjectId;
     level: number;
     isPublished: boolean;
+    total_articles: number;
 }
 
 const CollectionSchema = new Schema<TCollection>({
@@ -40,6 +41,11 @@ const CollectionSchema = new Schema<TCollection>({
     isPublished: {
         type: Boolean,
         default: true
+    },
+    total_articles: {
+        type: Number,
+        default: 0,
+        min: 0
     }
 }, {
     timestamps: true
