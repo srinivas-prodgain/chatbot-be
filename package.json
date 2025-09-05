@@ -30,6 +30,8 @@
   "homepage": "https://github.com/srinivas-prodgain/chatbot-be#readme",
   "description": "Backend API for chatbot application",
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.24",
+    "ai": "^5.0.33",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
