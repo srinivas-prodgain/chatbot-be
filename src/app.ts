@@ -9,6 +9,7 @@ import { post_router } from './routes/post';
 import { news_router } from './routes/news';
 import { help_router } from './routes/help';
 import { chat_router } from './routes/chat';
+import { file_routes } from './routes/file';
 
 const app: Application = express();
 
@@ -32,6 +33,7 @@ app.use('/post', post_router);
 app.use('/news', news_router);
 app.use('/help', help_router);
 app.use('/chat', chat_router);
+app.use('/file', file_routes);
 
 
 // app.use('/', (req: Request, res: Response) => {

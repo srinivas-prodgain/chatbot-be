@@ -4,6 +4,8 @@ import { News } from "../models/news";
 import { Author } from "../models/author";
 import { Collection } from "../models/collection";
 import { Article } from "../models/article";
+import { DocumentFile } from "../models/file";
+import { DocumentEmbedding } from "../models/file-embeddings";
 
 export const mg = {
     User,
@@ -11,5 +13,7 @@ export const mg = {
     News,
     Author,
     Collection,
-    Article
+    Article,
+    DocumentFile,
+    DocumentEmbedding
 }
