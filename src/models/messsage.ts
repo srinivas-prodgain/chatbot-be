@@ -9,7 +9,7 @@ type TMessage = Document & {
     userId: Schema.Types.ObjectId;
     message: string;
     sender: TSender;
-    conversationId: Schema.Types.ObjectId;
+    conversation_id: Schema.Types.ObjectId;
 }
 
 const messageSchema = new Schema<TMessage>({
@@ -27,7 +27,7 @@ const messageSchema = new Schema<TMessage>({
         enum: senders,
         required: true
     },
-    conversationId: {
+    conversation_id: {
         type: Schema.Types.ObjectId,
         ref: 'Conversation',
         required: true

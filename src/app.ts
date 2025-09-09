@@ -10,6 +10,7 @@ import { news_router } from './routes/news';
 import { help_router } from './routes/help';
 import { chat_router } from './routes/chat';
 import { file_routes } from './routes/file';
+import { conversation_router } from './routes/conversation';
 
 const app: Application = express();
 
@@ -33,6 +34,7 @@ app.use('/post', post_router);
 app.use('/news', news_router);
 app.use('/help', help_router);
 app.use('/chat', chat_router);
+app.use('/conversation', conversation_router);
 app.use('/file', file_routes);
 
 
