@@ -4,106 +4,86 @@ import { connect_to_db } from '../config/db';
 
 const postsData = [
     {
-        title: "Introducing AI-Powered Chat Assistant",
-        description: "Experience the future of customer support with our new AI-powered chat assistant. Get instant, intelligent responses to your queries 24/7. Our advanced natural language processing ensures accurate and helpful interactions every time.",
-        imageUrl: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/ai-chat-assistant",
-        linkText: "Try AI Assistant",
-        category: "product",
-        isActive: true,
-        tags: ["AI", "chatbot", "customer-support", "automation"]
-    },
-    {
-        title: "System Maintenance Scheduled",
-        description: "We will be performing scheduled maintenance on our servers this Sunday from 2:00 AM to 6:00 AM UTC. During this time, some services may be temporarily unavailable. We apologize for any inconvenience.",
-        imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/maintenance-schedule",
-        linkText: "View Details",
-        category: "announcement",
-        isActive: true,
-        tags: ["maintenance", "system-update", "downtime"]
-    },
-    {
-        title: "Virtual Tech Conference 2024",
-        description: "Join us for the biggest virtual technology conference of the year! Connect with industry leaders, attend innovative workshops, and discover the latest trends in AI, blockchain, and cloud computing.",
-        imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/tech-conference-2024",
-        linkText: "Register Now",
-        category: "event",
-        isActive: true,
-        tags: ["conference", "technology", "virtual-event", "networking"]
-    },
-    {
-        title: "Enhanced Security Features Released",
-        description: "We've rolled out enhanced security features including two-factor authentication, advanced encryption, and real-time threat detection. Your data security is our top priority.",
-        imageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/security-update",
+        title: "AI Strategy",
+        description: "Generative AI can feel overwhelming without the right guidance. We analyze your operations, identify high-impact opportunities, and create a clear roadmap that aligns AI capabilities with your business goals - all while considering your budget and existing processes.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082216/Screenshot_2025-09-05_at_19.36.32_xq3qop.png",
+        linkUrl: "https://www.prodgain.ai/#ai-strategy",
         linkText: "Learn More",
-        category: "update",
+        category: "service",
         isActive: true,
-        tags: ["security", "encryption", "2FA", "privacy"]
+        tags: ["AI", "strategy", "roadmap", "consulting"]
     },
     {
-        title: "Real-time Collaboration Feature",
-        description: "Collaborate with your team in real-time like never before! Share documents, edit simultaneously, and communicate seamlessly with our new collaboration tools designed for modern remote teams.",
-        imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/collaboration-tools",
-        linkText: "Explore Features",
-        category: "feature",
+        title: "Model Finetuning",
+        description: "Off-the-shelf models rarely meet all your needs. Our experts handle everything from data curation to finetuning with specialized techniques like synthetic data generation and hyperparameter tuning. The result is custom AI solutions optimized for your unique challenges.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082217/Screenshot_2025-09-05_at_19.52.32_yk4jot.png",
+        linkUrl: "https://www.prodgain.ai/#model-finetuning",
+        linkText: "Learn More",
+        category: "service",
         isActive: true,
-        tags: ["collaboration", "real-time", "teamwork", "productivity"]
+        tags: ["AI", "model", "finetuning", "customization"]
     },
     {
-        title: "Mobile App Now Available",
-        description: "Download our brand new mobile app and take your experience on the go! Available for both iOS and Android with all the features you love, optimized for mobile devices.",
-        imageUrl: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/mobile-app",
-        linkText: "Download App",
+        title: "AI Integration",
+        description: "Organizations often lack the bandwidth and expertise to integrate AI solutions with their existing systems. We bridge this gap by handling the end-to-end integration process, from building proof-of-concepts to production deployment, while ensuring compliance with your security.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082217/Screenshot_2025-09-05_at_19.52.40_jykwjl.png",
+        linkUrl: "https://www.prodgain.ai/#ai-integration",
+        linkText: "Learn More",
+        category: "service",
+        isActive: true,
+        tags: ["AI", "integration", "deployment", "security"]
+    },
+    {
+        title: "Generative AI Ops",
+        description: "Maintaining AI systems requires continuous monitoring and updates to keep up with rapid technological changes. We provide ongoing operational support, performance optimization, and system updates - effectively future-proofing your AI investments while you focus on.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082218/Screenshot_2025-09-05_at_19.52.46_cucxl1.png",
+        linkUrl: "https://www.prodgain.ai/#generative-ai-ops",
+        linkText: "Learn More",
+        category: "service",
+        isActive: true,
+        tags: ["AI", "operations", "maintenance", "optimization"]
+    },
+    {
+        title: "SalesOS",
+        description: "Unlock the hidden value in your unstructured sales data. We analyze communications across all channels - calls, meetings, emails, and chats - to surface meaningful patterns and opportunities. Our solutions seamlessly integrate with your existing tools, including CRM systems, email services, and internal platforms.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082083/Screenshot_2025-09-05_at_19.47.10_liojd3.png",
+        linkUrl: "https://www.prodgain.ai/#salesos",
+        linkText: "Learn More",
         category: "product",
         isActive: true,
-        tags: ["mobile-app", "iOS", "android", "download"]
+        tags: ["sales", "AI", "conversation analysis", "CRM", "revenue intelligence"],
     },
     {
-        title: "Data Privacy Policy Update",
-        description: "We've updated our data privacy policy to ensure better transparency and user control. Review the changes to understand how we protect and handle your personal information.",
-        imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/privacy-policy",
-        linkText: "Read Policy",
-        category: "announcement",
+        title: "ResearchOS",
+        description: "Transform your research workflow with AI-powered automation. Our solutions intelligently process and analyze content across internet-wide data sources, your private databases, unstructured documents and external APIs. We synthesize this vast information into clear, actionable insights tailored to your needs.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082083/Screenshot_2025-09-05_at_19.47.42_xabm0x.png",
+        linkUrl: "https://www.prodgain.ai/#researchos",
+        linkText: "Learn More",
+        category: "product",
         isActive: true,
-        tags: ["privacy", "policy", "data-protection", "transparency"]
+        tags: ["research", "AI", "automation", "document processing", "knowledge base"],
     },
     {
-        title: "Developer Workshop: Building with APIs",
-        description: "Join our hands-on workshop for developers! Learn how to integrate our APIs into your applications, best practices for API usage, and get direct support from our engineering team.",
-        imageUrl: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/developer-workshop",
-        linkText: "Join Workshop",
-        category: "event",
+        title: "ComplianceOS",
+        description: "Ensure consistency and compliance across all content with AI-driven oversight. Our solution understands your unique brand guidelines, quality standards, style requirements, and compliance frameworks. We build specialized AI agents that automatically verify and validate content against these parameters, streamlining your quality control process.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082083/Screenshot_2025-09-05_at_19.47.53_c557o3.png",
+        linkUrl: "https://www.prodgain.ai/#complianceos",
+        linkText: "Learn More",
+        category: "product",
         isActive: true,
-        tags: ["developer", "workshop", "API", "integration"]
+        tags: ["compliance", "AI", "quality control", "brand consistency", "automation"],
     },
     {
-        title: "Performance Improvements Deployed",
-        description: "We've deployed significant performance improvements across the platform. Experience faster load times, smoother interactions, and improved overall system responsiveness.",
-        imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/performance-update",
-        linkText: "View Metrics",
-        category: "update",
+        title: "MarketingOS",
+        description: "Optimize your content for the new generation of AI-powered search engines. We help you understand and adapt to how platforms like SearchGPT, Copilot, and Perplexity process and rank content.",
+        imageUrl: "https://res.cloudinary.com/dwhuwudg9/image/upload/v1757082084/Screenshot_2025-09-05_at_19.47.58_o2coyx.png",
+        linkUrl: "https://www.prodgain.ai/#marketingos",
+        linkText: "Learn More",
+        category: "product",
         isActive: true,
-        tags: ["performance", "optimization", "speed", "improvement"]
-    },
-    {
-        title: "Advanced Analytics Dashboard",
-        description: "Get deeper insights into your data with our new advanced analytics dashboard. Features include custom reporting, data visualization, and predictive analytics powered by machine learning.",
-        imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-        linkUrl: "https://example.com/analytics-dashboard",
-        linkText: "Explore Dashboard",
-        category: "feature",
-        isActive: true,
-        tags: ["analytics", "dashboard", "data-visualization", "machine-learning"]
+        tags: ["marketing", "AI", "SEO", "content optimization", "search engines"],
     }
-];
+]
 
 async function seedPosts() {
     try {
@@ -141,4 +121,4 @@ async function seedPosts() {
 }
 
 // Run the seed function
-// seedPosts();
+seedPosts();

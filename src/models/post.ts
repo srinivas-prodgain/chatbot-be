@@ -1,7 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 
 
-export const categories = ['product', 'announcement', 'event', 'update', 'feature'] as const;
+export const categories = ['product', 'announcement', 'event', 'update', 'feature', 'service'] as const;
 type TCategory = (typeof categories)[number];
 
 type TPost = Document & {

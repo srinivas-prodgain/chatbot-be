@@ -9,6 +9,7 @@ type TEnv = {
     host: string
     nodeEnv: string
     frontendUrl: string
+    openaiApiKey: string
 }
 
 const env: TEnv = {
@@ -17,6 +18,7 @@ const env: TEnv = {
     host: process.env.HOST || 'localhost',
     nodeEnv: process.env.NODE_ENV || 'development',
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
+    openaiApiKey: process.env.OPENAI_API_KEY || '',
 }
 
 export default env

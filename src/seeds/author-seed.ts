@@ -134,18 +134,18 @@ async function seedAuthors() {
     }
 }
 
-async function runAuthorSeed() {
-    try {
-        await seedAuthors();
-    } catch (error) {
-        console.error('❌ Error in author seed process:', error);
-    } finally {
-        // Close database connection
-        await mongoose.connection.close();
-        console.log('🔌 Database connection closed');
-        process.exit(0);
-    }
-}
+// async function runAuthorSeed() {
+//     try {
+//         await seedAuthors();
+//     } catch (error) {
+//         console.error('❌ Error in author seed process:', error);
+//     } finally {
+//         // Close database connection
+//         await mongoose.connection.close();
+//         console.log('🔌 Database connection closed');
+//         process.exit(0);
+//     }
+// }
 
 // Export for use in other seed files
 export { seedAuthors };
