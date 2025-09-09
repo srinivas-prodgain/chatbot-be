@@ -1,6 +1,13 @@
 import { Document, model, Schema } from "mongoose";
 import { updateCollectionArticleCount } from "../utils/update-collection-article-count";
 
+export const ARTICLE_REACTIONS = ['sad', 'middle', 'happy'] as const;
+export type ArticleReaction = typeof ARTICLE_REACTIONS[number];
+
+export type ArticleReactionItem = {
+    reaction: ArticleReaction;
+    user_id: Schema.Types.ObjectId;
+};
 
 type TArticle = Document & {
     title: string;
@@ -14,6 +21,7 @@ type TArticle = Document & {
     tags: string[];
     readTime: number;
     isPublished: boolean;
+    reactions: ArticleReactionItem[];
 }
 
 
@@ -65,6 +73,18 @@ const ArticleSchema = new Schema<TArticle>({
         type: Boolean,
         default: true
     },
+    reactions: [{
+        reaction: {
+            type: String,
+            enum: ARTICLE_REACTIONS,
+            required: true
+        },
+        user_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        }
+    }],
 }, {
     timestamps: true
 });

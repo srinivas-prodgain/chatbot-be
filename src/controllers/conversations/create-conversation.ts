@@ -5,9 +5,7 @@ import { mg } from '../../config/mg';
 import { TrequestResponse } from '../../types/shared';
 
 export const create_conversation = async ({ req, res }: TrequestResponse) => {
-    const { title } = z_create_conversation_req_body.parse(req.body);
-
-    const user_id = req.body.user_id;
+    const { title, user_id } = z_create_conversation_req_body.parse(req.body);
 
     const conversation = await mg.Conversation.create({
         title: title || 'New Chat',
@@ -24,4 +22,5 @@ export const create_conversation = async ({ req, res }: TrequestResponse) => {
 
 const z_create_conversation_req_body = z.object({
     title: z.string().max(100).optional(),
+    user_id: z.string().min(1, 'user_id is required')
 });
