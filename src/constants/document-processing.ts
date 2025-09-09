@@ -17,4 +17,3 @@ export const VECTOR_INDEX_NAME = "document_vector_index";
 export const SPECIFIC_DOCUMENT_INDEX_NAME = "specific_document_vector_search";
 export const VECTOR_DIMENSION = 1024; // Vector dimension for embeddings
 
- 

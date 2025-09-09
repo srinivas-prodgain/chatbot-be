@@ -4,6 +4,7 @@ import { streamText } from 'ai';
 import { model } from '../../services/ai';
 import { message_handling_service } from '../../services/message-handling-service';
 import { Types } from 'mongoose';
+import { searchArticles } from '../../tools/search-articles';
 
 
 export const stream_chat = async ({ req, res }: TrequestResponse) => {
@@ -18,6 +19,9 @@ export const stream_chat = async ({ req, res }: TrequestResponse) => {
         model,
         messages: [{ role: 'user', content: message }],
         maxOutputTokens: 1000,
+        tools: {
+            searchArticles,
+        },
         onFinish: async (event) => {
             await message_handling_service.save_ai_message({
                 ai_response: event.text,

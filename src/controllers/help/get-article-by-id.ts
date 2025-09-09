@@ -3,6 +3,7 @@ import { mg } from '../../config/mg';
 import { TrequestResponse } from '../../types/shared';
 import { throw_error } from '../../utils/throw-error';
 import { Schema } from 'mongoose';
+import { ArticleReactionItem } from '../../models/article';
 
 type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;
@@ -30,6 +31,7 @@ type TArticleWithPopulatedAuthors = {
     tags: string[];
     readTime: number;
     isPublished: boolean;
+    reactions: ArticleReactionItem | null;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -56,6 +58,7 @@ type TFormattedArticle = {
     collection_id: Schema.Types.ObjectId;
     tags: string[];
     read_time: number;
+    reactions?: ArticleReactionItem | null;
     created_at: Date;
     updated_at: Date;
 }
@@ -68,6 +71,7 @@ type TResponseData = {
 
 export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
     const { article_id } = get_article_by_id_params_schema.parse(req.params);
+    // const { user_id } = get_article_by_id_query_schema.parse(req.query);
 
     const article = await mg.Article.findById<TArticleWithPopulatedAuthors>(article_id)
         .populate('author', 'name email profileImage bio role socialLinks')
@@ -105,6 +109,8 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
         });
     }
 
+    // const user_reaction = article!.reactions?.find(reaction => reaction.user_id.toString() === user_id) || null;
+
     const formatted_article: TFormattedArticle = {
         id: article!._id,
         title: article!.title,
@@ -114,6 +120,7 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
         collection_id: article!.collection_id,
         tags: article!.tags,
         read_time: article!.readTime,
+        // reactions: user_reaction,
         created_at: article!.createdAt,
         updated_at: article!.updatedAt
     };
@@ -132,4 +139,8 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
 
 const get_article_by_id_params_schema = z.strictObject({
     article_id: z.string().min(1, "Article ID is required")
+});
+
+const get_article_by_id_query_schema = z.strictObject({
+    user_id: z.string().min(1, "User ID is required")
 });

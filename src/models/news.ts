@@ -1,5 +1,12 @@
 import { Document, model, Schema } from "mongoose";
 
+export const NEWS_REACTIONS = ['sleeping', 'heart', 'thumbsdown', 'tada'] as const;
+export type NewsReaction = typeof NEWS_REACTIONS[number];
+
+export type NewsReactionItem = {
+    reaction: NewsReaction;
+    user_id: Schema.Types.ObjectId;
+};
 
 export const categories = ['ai-news', 'company-news', 'product-update', 'industry', 'technology', 'announcement'] as const;
 type TCategory = (typeof categories)[number];
@@ -18,6 +25,7 @@ type TNews = Document & {
     isPublished: boolean;
     isFeatured: boolean;
     readTime: number;
+    reactions: NewsReactionItem[];
 }
 
 const newsSchema = new Schema<TNews>({
@@ -74,7 +82,19 @@ const newsSchema = new Schema<TNews>({
     readTime: {
         type: Number,  // in minutes
         default: 5
-    }
+    },
+    reactions: [{
+        reaction: {
+            type: String,
+            enum: NEWS_REACTIONS,
+            required: true
+        },
+        user_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        }
+    }]
 }, {
     timestamps: true
 });
