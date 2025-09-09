@@ -6,6 +6,8 @@ import { Collection } from "../models/collection";
 import { Article } from "../models/article";
 import { DocumentFile } from "../models/file";
 import { DocumentEmbedding } from "../models/file-embeddings";
+import { Conversation } from "../models/conversation";
+import { Message } from "../models/messsage";
 
 export const mg = {
     User,
@@ -15,5 +17,7 @@ export const mg = {
     Collection,
     Article,
     DocumentFile,
-    DocumentEmbedding
+    DocumentEmbedding,
+    Conversation,
+    Message
 }
