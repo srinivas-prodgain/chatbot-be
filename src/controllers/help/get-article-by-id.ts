@@ -31,7 +31,7 @@ type TArticleWithPopulatedAuthors = {
     tags: string[];
     readTime: number;
     isPublished: boolean;
-    reactions: ArticleReactionItem | null;
+    reactions?: ArticleReactionItem[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -58,7 +58,7 @@ type TFormattedArticle = {
     collection_id: Schema.Types.ObjectId;
     tags: string[];
     read_time: number;
-    reactions?: ArticleReactionItem | null;
+    reaction?: ArticleReactionItem;
     created_at: Date;
     updated_at: Date;
 }
@@ -71,7 +71,7 @@ type TResponseData = {
 
 export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
     const { article_id } = get_article_by_id_params_schema.parse(req.params);
-    // const { user_id } = get_article_by_id_query_schema.parse(req.query);
+    const { user_id } = get_article_by_id_query_schema.parse(req.query);
 
     const article = await mg.Article.findById<TArticleWithPopulatedAuthors>(article_id)
         .populate('author', 'name email profileImage bio role socialLinks')
@@ -109,7 +109,7 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
         });
     }
 
-    // const user_reaction = article!.reactions?.find(reaction => reaction.user_id.toString() === user_id) || null;
+    const user_reaction = article!.reactions?.filter((reaction) => reaction.user_id.toString() === user_id);
 
     const formatted_article: TFormattedArticle = {
         id: article!._id,
@@ -120,7 +120,7 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
         collection_id: article!.collection_id,
         tags: article!.tags,
         read_time: article!.readTime,
-        // reactions: user_reaction,
+        reaction: user_reaction?.[0],
         created_at: article!.createdAt,
         updated_at: article!.updatedAt
     };
