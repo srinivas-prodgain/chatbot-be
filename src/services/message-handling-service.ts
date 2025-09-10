@@ -53,5 +53,16 @@ export const message_handling_service = {
         const update_conversation_promise = mg.Conversation.findByIdAndUpdate(conversation_id, { updatedAt: new Date() });
 
         await Promise.all([save_message_promise, update_conversation_promise]);
+    },
+
+    async get_conversation_history({ conversation_id }: { conversation_id: Types.ObjectId }) {
+        const messages = await mg.Message.find({ conversation_id })
+            .sort({ createdAt: 1 }) // Sort by creation time (oldest first)
+            .select('message sender createdAt')
+            .lean();
+
+        return messages;
     }
+
+
 }; 
