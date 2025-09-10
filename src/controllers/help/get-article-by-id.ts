@@ -49,6 +49,11 @@ type TFormattedAuthor = {
     };
 }
 
+type TFormattedRelatedArticle = {
+    id: Schema.Types.ObjectId;
+    title: string;
+}
+
 type TFormattedArticle = {
     id: Schema.Types.ObjectId;
     title: string;
@@ -58,6 +63,7 @@ type TFormattedArticle = {
     collection_id: Schema.Types.ObjectId;
     tags: string[];
     read_time: number;
+    related_articles: TFormattedRelatedArticle[];
     reaction?: ArticleReactionItem;
     created_at: Date;
     updated_at: Date;
@@ -75,7 +81,8 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
 
     const article = await mg.Article.findById<TArticleWithPopulatedAuthors>(article_id)
         .populate('author', 'name email profileImage bio role socialLinks')
-        .populate('coAuthors', 'name email profileImage bio role socialLinks');
+        .populate('coAuthors', 'name email profileImage bio role socialLinks')
+        .populate('relatedArticles', 'title _id');
 
     if (!article) {
         throw_error({ message: 'Article not found', status_code: 404 });
@@ -111,6 +118,11 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
 
     const user_reaction = article!.reactions?.filter((reaction) => reaction.user_id.toString() === user_id);
 
+    const formatted_related_articles: TFormattedRelatedArticle[] = article!.relatedArticles.map(relatedArticle => ({
+        id: relatedArticle._id,
+        title: relatedArticle.title,
+    }));
+
     const formatted_article: TFormattedArticle = {
         id: article!._id,
         title: article!.title,
@@ -120,6 +132,7 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
         collection_id: article!.collection_id,
         tags: article!.tags,
         read_time: article!.readTime,
+        related_articles: formatted_related_articles,
         reaction: user_reaction?.[0],
         created_at: article!.createdAt,
         updated_at: article!.updatedAt
