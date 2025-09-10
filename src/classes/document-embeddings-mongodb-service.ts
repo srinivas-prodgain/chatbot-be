@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { Types } from 'mongoose';
 
 import pdfParse from 'pdf-parse';
 import mammoth from 'mammoth';
@@ -97,6 +98,7 @@ type TStoreInMongodbArgs = {
 
 type TSearchSimilarDocumentsArgs = {
     query: string;
+    user_id: string;
     max_results?: number;
 };
 
@@ -393,8 +395,11 @@ export class DocumentEmbeddingsMongoDBService {
         }
     }
 
-    async search_similar_documents({ query, max_results = DEFAULT_SEARCH_RESULTS }: TSearchSimilarDocumentsArgs): Promise<TSearchResults> {
+    async search_similar_documents({ query, user_id, max_results = DEFAULT_SEARCH_RESULTS }: TSearchSimilarDocumentsArgs): Promise<TSearchResults> {
         try {
+            // Convert string user_id to ObjectId for MongoDB comparison
+            const user_object_id = new Types.ObjectId(user_id);
+
             // Generate embedding for the search query
             const query_embedding = await get_embedding({ text: query });
 
@@ -409,7 +414,10 @@ export class DocumentEmbeddingsMongoDBService {
                         path: "embedding",
                         queryVector: query_embedding,
                         numCandidates: max_results * 10,
-                        limit: max_results
+                        limit: max_results,
+                        filter: {
+                            user_id: { $eq: user_object_id }
+                        }
                     }
                 },
                 {
@@ -442,89 +450,89 @@ export class DocumentEmbeddingsMongoDBService {
         }
     }
 
-    async delete_document({ file_id }: TDeleteDocumentArgs): Promise<void> {
-        try {
-            // Delete all embeddings for this file
-            const delete_result = await mg.DocumentEmbedding.deleteMany({ file_id: file_id });
-            // console.log(`Deleted ${delete_result.deletedCount} embeddings for file ${file_id}`);
+    // async delete_document({ file_id }: TDeleteDocumentArgs): Promise<void> {
+    //     try {
+    //         // Delete all embeddings for this file
+    //         const delete_result = await mg.DocumentEmbedding.deleteMany({ file_id: file_id });
+    //         // console.log(`Deleted ${delete_result.deletedCount} embeddings for file ${file_id}`);
 
-            // Delete the file record
-            await mg.DocumentFile.deleteOne({ _id: file_id });
-            // console.log(`Deleted file record for ${file_id}`);
-        } catch (error: unknown) {
-            const error_message = error instanceof Error ? error.message : 'Unknown error occurred';
-            console.error('Error deleting document:', error);
-            throw new Error(`Delete failed: ${error_message}`);
-        }
-    }
+    //         // Delete the file record
+    //         await mg.DocumentFile.deleteOne({ _id: file_id });
+    //         // console.log(`Deleted file record for ${file_id}`);
+    //     } catch (error: unknown) {
+    //         const error_message = error instanceof Error ? error.message : 'Unknown error occurred';
+    //         console.error('Error deleting document:', error);
+    //         throw new Error(`Delete failed: ${error_message}`);
+    //     }
+    // }
 
-    async get_all_files({ user_id }: TGetAllFilesArgs): Promise<TFileMetadata[]> {
-        try {
-            const files = await mg.DocumentFile.find({ user_id: user_id })
-                .sort({ upload_date: -1 })
-                .lean();
+    // async get_all_files({ user_id }: TGetAllFilesArgs): Promise<TFileMetadata[]> {
+    //     try {
+    //         const files = await mg.DocumentFile.find({ user_id: user_id })
+    //             .sort({ upload_date: -1 })
+    //             .lean();
 
-            return files.map(file => ({
-                file_id: file._id,
-                file_name: file.file_name,
-                file_size: file.file_size,
-                file_type: file.file_type,
-                upload_date: file.upload_date.toISOString(),
-                chunk_count: file.chunk_count,
-                processing_status: file.processing_status
-            }));
-        } catch (error: unknown) {
-            const error_message = error instanceof Error ? error.message : 'Unknown error occurred';
-            console.error('Error getting all files:', error);
-            throw new Error(`Failed to get files: ${error_message}`);
-        }
-    }
+    //         return files.map(file => ({
+    //             file_id: file._id,
+    //             file_name: file.file_name,
+    //             file_size: file.file_size,
+    //             file_type: file.file_type,
+    //             upload_date: file.upload_date.toISOString(),
+    //             chunk_count: file.chunk_count,
+    //             processing_status: file.processing_status
+    //         }));
+    //     } catch (error: unknown) {
+    //         const error_message = error instanceof Error ? error.message : 'Unknown error occurred';
+    //         console.error('Error getting all files:', error);
+    //         throw new Error(`Failed to get files: ${error_message}`);
+    //     }
+    // }
 
-    async search_in_multiple_files({ file_ids, query, max_results = DEFAULT_SEARCH_RESULTS }: TSearchInMultipleFilesArgs): Promise<TSearchResults> {
-        try {
-            const query_embedding = await get_embedding({ text: query });
+    // async search_in_multiple_files({ file_ids, query, max_results = DEFAULT_SEARCH_RESULTS }: TSearchInMultipleFilesArgs): Promise<TSearchResults> {
+    //     try {
+    //         const query_embedding = await get_embedding({ text: query });
 
-            if (!query_embedding) {
-                throw new Error('Failed to generate embedding for search query');
-            }
+    //         if (!query_embedding) {
+    //             throw new Error('Failed to generate embedding for search query');
+    //         }
 
-            const pipeline = [
-                {
-                    $vectorSearch: {
-                        index: SPECIFIC_DOCUMENT_INDEX_NAME,
-                        path: "embedding",
-                        queryVector: query_embedding,
-                        numCandidates: max_results * 10,
-                        limit: max_results,
-                        filter: {
-                            file_id: { $in: file_ids }
-                        }
-                    }
-                },
-                {
-                    $project: {
-                        content: 1,
-                        metadata: 1,
-                        similarity: { $meta: "vectorSearchScore" }
-                    }
-                },
-                {
-                    $match: {
-                        similarity: { $gt: SEARCH_SIMILARITY_THRESHOLD }
-                    }
-                }
-            ];
+    //         const pipeline = [
+    //             {
+    //                 $vectorSearch: {
+    //                     index: SPECIFIC_DOCUMENT_INDEX_NAME,
+    //                     path: "embedding",
+    //                     queryVector: query_embedding,
+    //                     numCandidates: max_results * 10,
+    //                     limit: max_results,
+    //                     filter: {
+    //                         file_id: { $in: file_ids }
+    //                     }
+    //                 }
+    //             },
+    //             {
+    //                 $project: {
+    //                     content: 1,
+    //                     metadata: 1,
+    //                     similarity: { $meta: "vectorSearchScore" }
+    //                 }
+    //             },
+    //             {
+    //                 $match: {
+    //                     similarity: { $gt: SEARCH_SIMILARITY_THRESHOLD }
+    //                 }
+    //             }
+    //         ];
 
-            const results = await mg.DocumentEmbedding.aggregate(pipeline).exec();
+    //         const results = await mg.DocumentEmbedding.aggregate(pipeline).exec();
 
-            return [results.map((r: { content: string }) => r.content)];
+    //         return [results.map((r: { content: string }) => r.content)];
 
-        } catch (error: unknown) {
-            const error_message = error instanceof Error ? error.message : 'Unknown error occurred';
-            console.error('Error searching in multiple files:', error);
-            throw new Error(`Multi-file search failed: ${error_message}`);
-        }
-    }
+    //     } catch (error: unknown) {
+    //         const error_message = error instanceof Error ? error.message : 'Unknown error occurred';
+    //         console.error('Error searching in multiple files:', error);
+    //         throw new Error(`Multi-file search failed: ${error_message}`);
+    //     }
+    // }
 }
 
 export const document_embeddings_mongodb_service = DocumentEmbeddingsMongoDBService.get_instance();
