@@ -1,47 +1,52 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, {
+    Request,
+    Response,
+    NextFunction,
+    json,
+    urlencoded
+} from 'express';
+
+
 import cors from 'cors';
 import morgan from 'morgan';
+
 import env from './config/env';
+
 import { user_router } from './routes/user';
 import { global_error_handler } from './middleware/global-error-handler';
 import { throw_error } from './utils/throw-error';
 import { post_router } from './routes/post';
 import { news_router } from './routes/news';
-import { help_router } from './routes/help';
+import { collection_router } from './routes/collection';
 import { chat_router } from './routes/chat';
 import { file_routes } from './routes/file';
 import { conversation_router } from './routes/conversation';
+import { article_router } from './routes/article';
 
-const app: Application = express();
+const app = express();
 
 app.use(cors({
-    origin: [
-        env.frontendUrl,
-        /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$/,  // Allow local network IPs
-        /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/, // Allow 10.x.x.x network
-        /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$/ // Allow 172.16-31.x.x
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
-app.use(morgan('combined'));
-app.use(express.json());
+app.use(json({ limit: '50mb' }))
+app.use(urlencoded({ limit: '50mb', extended: true }))
+app.use(morgan('dev'))
 
-app.use('/user', user_router);
-app.use('/post', post_router);
-app.use('/news', news_router);
-app.use('/help', help_router);
-app.use('/chat', chat_router);
-app.use('/conversation', conversation_router);
-app.use('/file', file_routes);
+app.use('/api/v1/user', user_router);
+app.use('/api/v1/post', post_router);
+app.use('/api/v1/news', news_router);
+app.use('/api/v1/collection', collection_router);
+app.use('/api/v1/article', article_router);
+app.use('/api/v1/chat/stream', chat_router);
+app.use('/api/v1/conversation', conversation_router);
+app.use('/api/v1/file', file_routes);
 
-
-// app.use('/', (req: Request, res: Response) => {
-//     res.send('Chatbot Backend Server is running');
-// });
-
+// Handle unknown routes
+app.all('*', (req: Request, _req: Response, _next: NextFunction) => {
+    throw_error({ message: `Route '${req.originalUrl}' not found`, status_code: 404 })
+})
 
 // 404 handler
 app.use((req: Request, res: Response) => {

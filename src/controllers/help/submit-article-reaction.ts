@@ -6,11 +6,11 @@ import { z } from 'zod';
 
 
 export const submit_article_reaction = async ({ req, res }: TrequestResponse) => {
-    const { article_id } = z_submit_article_reaction_params.parse(req.params);
+    const { _id } = z_submit_article_reaction_params.parse(req.params);
     const { reaction, user_id } = z_submit_article_reaction_body.parse(req.body);
 
     // First, try to find if this user already has a reaction on this article
-    const article = await Article.findById(article_id);
+    const article = await Article.findById(_id);
 
     if (!article) {
         throw_error({ message: 'Article not found', status_code: 404 });
@@ -27,14 +27,14 @@ export const submit_article_reaction = async ({ req, res }: TrequestResponse) =>
     if (existingReactionIndex !== -1) {
         // Update existing reaction
         updatedArticle = await Article.findByIdAndUpdate(
-            article_id,
+            _id,
             { $set: { [`reactions.${existingReactionIndex}.reaction`]: reaction } },
             { new: true, runValidators: true }
         );
     } else {
         // Add new reaction
         updatedArticle = await Article.findByIdAndUpdate(
-            article_id,
+            _id,
             { $push: { reactions: { reaction, user_id } } },
             { new: true, runValidators: true }
         );
@@ -50,7 +50,7 @@ export const submit_article_reaction = async ({ req, res }: TrequestResponse) =>
 };
 
 const z_submit_article_reaction_params = z.object({
-    article_id: z.string().min(1, 'Article ID is required')
+    _id: z.string().min(1, 'Article ID is required')
 });
 
 const z_submit_article_reaction_body = z.object({

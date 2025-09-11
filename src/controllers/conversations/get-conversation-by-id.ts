@@ -7,9 +7,9 @@ import { throw_error } from '../../utils/throw-error';
 import { TrequestResponse } from '../../types/shared';
 
 export const get_conversation_by_id = async ({ req, res }: TrequestResponse) => {
-    const { id } = z_get_conversation_by_id_req_params.parse(req.params);
+    const { _id } = z_get_conversation_by_id_req_params.parse(req.params);
 
-    const conversation = await mg.Conversation.findOne({ _id: id }).lean();
+    const conversation = await mg.Conversation.findOne({ _id }).lean();
 
     if (!conversation) {
         throw_error({ message: 'Conversation not found', status_code: 404 });
@@ -37,5 +37,5 @@ export const get_conversation_by_id = async ({ req, res }: TrequestResponse) => 
 };
 
 const z_get_conversation_by_id_req_params = z.object({
-    id: z.string().min(1, 'id is required')
+    _id: z.string().min(1, 'id is required')
 });

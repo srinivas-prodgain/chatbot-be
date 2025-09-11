@@ -10,10 +10,10 @@ import { getSystemPrompt } from '../../lib/system-prompt';
 
 export const stream_chat = async ({ req, res }: TrequestResponse) => {
 
-    const { id } = z_stream_chat_messages_req_params.parse(req.params);
+    const { _id } = z_stream_chat_messages_req_params.parse(req.params);
     const { message, user_id } = z_stream_chat_messages_req_body.parse(req.body);
 
-    const conversation = await message_handling_service.get_or_create_conversation({ conversation_id: id, message, user_id: req.body.user_id });
+    const conversation = await message_handling_service.get_or_create_conversation({ conversation_id: _id, message, user_id: req.body.user_id });
     await message_handling_service.save_user_message({ message, conversation_id: conversation._id as Types.ObjectId, user_id: req.body.user_id });
 
     const system_message: ModelMessage = {
@@ -44,7 +44,7 @@ export const stream_chat = async ({ req, res }: TrequestResponse) => {
 };
 
 const z_stream_chat_messages_req_params = z.object({
-    id: z.string().min(1, 'id is required'),
+    _id: z.string().min(1, 'id is required'),
 });
 
 const z_stream_chat_messages_req_body = z.object({

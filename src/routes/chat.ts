@@ -1,10 +1,10 @@
-import { async_handler } from "../middleware/global-error-handler";
 import { Router } from "express";
+
+import { async_handler } from "../middleware/global-error-handler";
 import { stream_chat } from "../controllers/chat/stream-chat";
 
 const router = Router();
 
-// POST /api/chat/stream - Stream chat responses using SSE
-router.post('/stream/:id', async_handler(stream_chat));
+router.post('/:_id', async_handler(stream_chat));
 
-export const chat_router = router;
+export { router as chat_router };

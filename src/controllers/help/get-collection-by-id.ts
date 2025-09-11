@@ -75,9 +75,9 @@ type TResponseData = {
 
 export const get_collection_by_id = async ({ req, res }: TrequestResponse) => {
 
-    const { collection_id } = get_collection_by_id_params_schema.parse(req.params);
+    const { _id } = get_collection_by_id_params_schema.parse(req.params);
 
-    const collection = await mg.Collection.findById<TCollectionResponse>(collection_id)
+    const collection = await mg.Collection.findById<TCollectionResponse>(_id)
 
     if (!collection) {
         throw_error({ message: 'Collection not found', status_code: 404 });
@@ -176,5 +176,5 @@ export const get_collection_by_id = async ({ req, res }: TrequestResponse) => {
 }
 
 const get_collection_by_id_params_schema = z.strictObject({
-    collection_id: z.string().min(1, "Collection ID is required")
+    _id: z.string().min(1, "Collection ID is required")
 });

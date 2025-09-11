@@ -54,9 +54,9 @@ type TNewsWithPopulatedAuthors = {
 
 export const get_news_by_id = async ({ req, res }: TrequestResponse) => {
 
-    const { id } = get_news_by_id_schema.parse(req.params);
+    const { _id } = get_news_by_id_schema.parse(req.params);
     const { user_id } = get_news_by_id_query_schema.parse(req.query);
-    const news = await mg.News.findById<TNewsWithPopulatedAuthors>(id)
+    const news = await mg.News.findById<TNewsWithPopulatedAuthors>(_id)
         .populate('author')
         .exec();
 
@@ -98,7 +98,7 @@ export const get_news_by_id = async ({ req, res }: TrequestResponse) => {
 }
 
 const get_news_by_id_schema = z.strictObject({
-    id: z.string().min(1, "News ID is required")
+    _id: z.string().min(1, "News ID is required")
 });
 
 const get_news_by_id_query_schema = z.strictObject({

@@ -76,10 +76,10 @@ type TResponseData = {
 }
 
 export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
-    const { article_id } = get_article_by_id_params_schema.parse(req.params);
+    const { _id } = get_article_by_id_params_schema.parse(req.params);
     const { user_id } = get_article_by_id_query_schema.parse(req.query);
 
-    const article = await mg.Article.findById<TArticleWithPopulatedAuthors>(article_id)
+    const article = await mg.Article.findById<TArticleWithPopulatedAuthors>(_id)
         .populate('author', 'name email profileImage bio role socialLinks')
         .populate('coAuthors', 'name email profileImage bio role socialLinks')
         .populate('relatedArticles', 'title _id');
@@ -151,7 +151,7 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
 }
 
 const get_article_by_id_params_schema = z.strictObject({
-    article_id: z.string().min(1, "Article ID is required")
+    _id: z.string().min(1, "Article ID is required")
 });
 
 const get_article_by_id_query_schema = z.strictObject({

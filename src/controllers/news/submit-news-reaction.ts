@@ -6,11 +6,11 @@ import { z } from 'zod';
 
 
 export const submit_news_reaction = async ({ req, res }: TrequestResponse) => {
-    const { news_id } = z_submit_news_reaction_params.parse(req.params);
+    const { _id } = z_submit_news_reaction_params.parse(req.params);
     const { reaction, user_id } = z_submit_news_reaction_body.parse(req.body);
 
     // First, try to find if this user already has a reaction on this news
-    const news = await mg.News.findById(news_id);
+    const news = await mg.News.findById(_id);
 
     if (!news) {
         throw_error({ message: 'News not found', status_code: 404 });
@@ -27,14 +27,14 @@ export const submit_news_reaction = async ({ req, res }: TrequestResponse) => {
     if (existingReactionIndex !== -1) {
         // Update existing reaction
         updatedNews = await mg.News.findByIdAndUpdate(
-            news_id,
+            _id,
             { $set: { [`reactions.${existingReactionIndex}.reaction`]: reaction } },
             { new: true, runValidators: true }
         );
     } else {
         // Add new reaction
         updatedNews = await mg.News.findByIdAndUpdate(
-            news_id,
+            _id,
             { $push: { reactions: { reaction, user_id } } },
             { new: true, runValidators: true }
         );
@@ -50,7 +50,7 @@ export const submit_news_reaction = async ({ req, res }: TrequestResponse) => {
 };
 
 const z_submit_news_reaction_params = z.object({
-    news_id: z.string().min(1, 'News ID is required')
+    _id: z.string().min(1, 'News ID is required')
 });
 
 const z_submit_news_reaction_body = z.object({
