@@ -43,11 +43,6 @@ app.use('/api/v1/chat/stream', chat_router);
 app.use('/api/v1/conversation', conversation_router);
 app.use('/api/v1/file', file_routes);
 
-// Handle unknown routes
-app.all('*', (req: Request, _req: Response, _next: NextFunction) => {
-    throw_error({ message: `Route '${req.originalUrl}' not found`, status_code: 404 })
-})
-
 // 404 handler
 app.use((req: Request, res: Response) => {
     throw_error({ message: `The requested route ${req.originalUrl} does not exist`, status_code: 404 });
