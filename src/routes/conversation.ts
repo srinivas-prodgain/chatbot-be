@@ -8,7 +8,7 @@ const router = Router();
 
 // router.post('/', create_conversation);
 
-router.post('/', get_all_conversations);
+router.get('/', get_all_conversations);
 
 router.get('/:_id', get_conversation_by_id);
 

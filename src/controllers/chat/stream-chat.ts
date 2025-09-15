@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ModelMessage, streamText } from 'ai';
+import { streamText, stepCountIs, ModelMessage } from 'ai';
 import { model } from '../../services/ai';
 import { message_handling_service } from '../../services/message-handling-service';
 import { Types } from 'mongoose';
@@ -15,8 +15,8 @@ export const stream_chat = async (req: Request, res: Response) => {
     const { user_id } = z_stream_chat_messages_req_query.parse(req.query);
     const { message } = z_stream_chat_messages_req_body.parse(req.body);
 
-    const conversation = await message_handling_service.get_or_create_conversation({ conversation_id: _id, message, user_id: req.body.user_id });
-    await message_handling_service.save_user_message({ message, conversation_id: conversation._id as Types.ObjectId, user_id: req.body.user_id });
+    const conversation = await message_handling_service.get_or_create_conversation({ conversation_id: _id, message, user_id });
+    await message_handling_service.save_user_message({ message, conversation_id: conversation._id as Types.ObjectId, user_id });
 
     if (!conversation) {
         throw_error('Conversation not found', 404);
@@ -33,9 +33,11 @@ export const stream_chat = async (req: Request, res: Response) => {
         model,
         messages: [system_message, ...conversation_history],
         maxOutputTokens: 1000,
-        // tools: {
-        //     search_user_documents,
-        // },
+        tools: {
+            search_user_documents,
+        },
+        toolChoice: 'auto',
+        stopWhen: stepCountIs(5),
         onFinish: async (event) => {
             await message_handling_service.save_ai_message({
                 ai_response: event.text,
