@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
 import { throw_error } from '../../utils/throw-error';
 import { Schema } from 'mongoose';
 import { ArticleReactionItem } from '../../models/article';
+import { Request, Response } from 'express';
 
 type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;
@@ -75,7 +75,7 @@ type TResponseData = {
     co_authors: TFormattedAuthor[];
 }
 
-export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
+export const get_article_by_id = async (req: Request, res: Response) => {
     const { _id } = get_article_by_id_params_schema.parse(req.params);
     const { user_id } = get_article_by_id_query_schema.parse(req.query);
 
@@ -85,11 +85,11 @@ export const get_article_by_id = async ({ req, res }: TrequestResponse) => {
         .populate('relatedArticles', 'title _id');
 
     if (!article) {
-        throw_error({ message: 'Article not found', status_code: 404 });
+        throw_error('Article not found', 404);
     }
 
     if (!article!.isPublished) {
-        throw_error({ message: 'Article not available', status_code: 404 });
+        throw_error('Article not available', 404);
     }
 
     const formatAuthor = (author: TPopulatedAuthor): TFormattedAuthor => ({

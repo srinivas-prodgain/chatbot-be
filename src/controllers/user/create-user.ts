@@ -2,16 +2,17 @@ import { z } from 'zod';
 import { mg } from '../../config/mg';
 import { throw_error } from '../../utils/throw-error';
 import { themes, languages } from '../../models/user';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
 
 
-export const create_user = async ({ req, res }: TrequestResponse) => {
+export const create_user = async (req: Request, res: Response) => {
 
-    const { user_id, preferences } = create_user_schema.parse(req.body);
+    const { preferences } = z_create_user_req_body.parse(req.body);
+    const { user_id } = z_create_user_req_query.parse(req.query);
 
     const user = await mg.User.findOne({ _id: user_id });
     if (user) {
-        throw_error({ message: 'User already exists', status_code: 400 });
+        throw_error('User already exists', 400);
     }
 
     await mg.User.create({ _id: user_id, preferences });
@@ -21,8 +22,11 @@ export const create_user = async ({ req, res }: TrequestResponse) => {
     })
 }
 
-const create_user_schema = z.strictObject({
-    user_id: z.string(),
+const z_create_user_req_query = z.object({
+    user_id: z.string().min(1, 'User ID is required')
+});
+
+const z_create_user_req_body = z.strictObject({
     preferences: z.object({
         theme: z.enum(themes),
         language: z.enum(languages)

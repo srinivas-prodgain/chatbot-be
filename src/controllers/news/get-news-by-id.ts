@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
 import { throw_error } from '../../utils/throw-error';
 import { NewsReactionItem } from '../../models/news';
 import { Schema } from 'mongoose';
@@ -52,22 +52,20 @@ type TNewsWithPopulatedAuthors = {
 
 
 
-export const get_news_by_id = async ({ req, res }: TrequestResponse) => {
+export const get_news_by_id = async (req: Request, res: Response) => {
 
-    const { _id } = get_news_by_id_schema.parse(req.params);
-    const { user_id } = get_news_by_id_query_schema.parse(req.query);
+    const { _id } = z_get_news_by_id_req_params.parse(req.params);
+    const { user_id } = z_get_news_by_id_req_query.parse(req.query);
     const news = await mg.News.findById<TNewsWithPopulatedAuthors>(_id)
         .populate('author')
         .exec();
 
     if (!news) {
-        throw_error({ message: "News not found", status_code: 404 });
-        return; // This line will never be reached, but helps TypeScript
+        throw_error("News not found", 404);
     }
 
     if (!news.isPublished) {
-        throw_error({ message: "News is not published", status_code: 403 });
-        return; // This line will never be reached, but helps TypeScript
+        throw_error("News is not published", 403);
     }
 
     const user_reaction = news!.reactions?.filter((newsReaction) => newsReaction.user_id.toString() === user_id);
@@ -97,10 +95,10 @@ export const get_news_by_id = async ({ req, res }: TrequestResponse) => {
 
 }
 
-const get_news_by_id_schema = z.strictObject({
+const z_get_news_by_id_req_params = z.strictObject({
     _id: z.string().min(1, "News ID is required")
 });
 
-const get_news_by_id_query_schema = z.strictObject({
+const z_get_news_by_id_req_query = z.strictObject({
     user_id: z.string().min(1, "User ID is required")
 });

@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
 import { Schema } from 'mongoose';
 import { createSnippet } from '../../utils/create-snippet';
+import { throw_error } from '../../utils/throw-error';
+import { Request, Response } from 'express';
 
 type TArticleSearchResult = {
     _id: Schema.Types.ObjectId;
@@ -23,7 +24,7 @@ type TResponseData = {
     search_query: string;
 }
 
-export const get_articles_by_search = async ({ req, res }: TrequestResponse) => {
+export const get_articles_by_search = async (req: Request, res: Response) => {
     const { search } = get_articles_by_search_query_schema.parse(req.query);
 
     // Create a case-insensitive regex pattern for searching
@@ -41,6 +42,9 @@ export const get_articles_by_search = async ({ req, res }: TrequestResponse) => 
         .limit(10)
         .sort({ createdAt: -1 });
 
+    if (!articles) {
+        throw_error('Articles not found', 404);
+    }
 
     const formatted_articles: TFormattedSearchArticle[] = articles.map(article => {
         // Check if the search term is in the title

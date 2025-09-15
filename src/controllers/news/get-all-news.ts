@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
+import { throw_error } from '../../utils/throw-error';
 
-export const get_all_news = async ({ req, res }: TrequestResponse) => {
+export const get_all_news = async (req: Request, res: Response) => {
 
-    const { page, limit } = get_all_news_query_schema.parse(req.query);
+    const { page, limit } = z_get_all_news_req_query.parse(req.query);
 
     const news = mg.News.find({ isPublished: true })
         .select('title slug content imageUrl tags _id')
@@ -15,6 +16,10 @@ export const get_all_news = async ({ req, res }: TrequestResponse) => {
     const get_total_news = mg.News.countDocuments({ isPublished: true });
 
     const [news_data, total_news] = await Promise.all([news, get_total_news]);
+
+    if (!news_data) {
+        throw_error('News not found', 404);
+    }
 
     // Truncate content to 3 lines (approximately 150 characters)
     const formatted_news = news_data.map(item => ({
@@ -43,7 +48,7 @@ export const get_all_news = async ({ req, res }: TrequestResponse) => {
 
 }
 
-const get_all_news_query_schema = z.strictObject({
+const z_get_all_news_req_query = z.strictObject({
     page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
     limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100))
 });

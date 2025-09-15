@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
+import { throw_error } from '../../utils/throw-error';
 
-export const get_all_collections = async ({ req, res }: TrequestResponse) => {
+export const get_all_collections = async (req: Request, res: Response) => {
 
     const { page, limit } = get_all_collections_query_schema.parse(req.query);
 
@@ -21,6 +22,10 @@ export const get_all_collections = async ({ req, res }: TrequestResponse) => {
     });
 
     const [collections_data, total_collections] = await Promise.all([collections, get_total_collections]);
+
+    if (!collections_data) {
+        throw_error('Collections not found', 404);
+    }
 
     const formatted_collections = collections_data.map(collection => ({
         id: collection._id,

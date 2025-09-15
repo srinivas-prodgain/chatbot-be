@@ -4,16 +4,15 @@ import { mg } from '../../config/mg';
 import { throw_error } from '../../utils/throw-error';
 
 
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
 
-export const get_conversation_by_id = async ({ req, res }: TrequestResponse) => {
+export const get_conversation_by_id = async (req: Request, res: Response) => {
     const { _id } = z_get_conversation_by_id_req_params.parse(req.params);
 
     const conversation = await mg.Conversation.findOne({ _id }).lean();
 
     if (!conversation) {
-        throw_error({ message: 'Conversation not found', status_code: 404 });
-        return;
+        throw_error('Conversation not found', 404);
     }
 
     const messages = await mg.Message.find({ conversation_id: conversation._id })
@@ -21,8 +20,7 @@ export const get_conversation_by_id = async ({ req, res }: TrequestResponse) => 
         .select('message sender createdAt updatedAt').lean();
 
     if (!messages) {
-        throw_error({ message: 'Messages not found', status_code: 404 });
-        return;
+        throw_error('Messages not found', 404);
     }
 
     const conversation_with_messages = {

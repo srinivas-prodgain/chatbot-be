@@ -1,12 +1,11 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { throw_error } from '../../utils/throw-error';
+import { Request, Response } from 'express';
 
-export const get_all_conversations = async ({ req, res }: TrequestResponse) => {
+export const get_all_conversations = async (req: Request, res: Response) => {
 
-    const { user_id } = get_all_conversations_schema.parse(req.body);
-    const { page, limit } = get_all_conversations_query_schema.parse(req.query);
-    console.log(user_id, page, limit);
+    const { page, limit, user_id } = get_all_conversations_query_schema.parse(req.query);
 
     const conversations = mg.Conversation.find({
         userId: user_id,
@@ -23,6 +22,10 @@ export const get_all_conversations = async ({ req, res }: TrequestResponse) => {
     });
 
     const [conversations_data, total_conversations] = await Promise.all([conversations, get_total_conversations]);
+
+    if (conversations_data.length === 0) {
+        throw_error('Conversations not found', 404);
+    }
 
     const total_pages = Math.ceil(total_conversations / limit);
 
@@ -41,9 +44,6 @@ export const get_all_conversations = async ({ req, res }: TrequestResponse) => {
 
 const get_all_conversations_query_schema = z.strictObject({
     page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
-    limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100))
-});
-
-const get_all_conversations_schema = z.strictObject({
+    limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100)),
     user_id: z.string().min(1, 'user_id is required')
 });
