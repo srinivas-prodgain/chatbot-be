@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
 import { throw_error } from '../../utils/throw-error';
 import { Schema } from 'mongoose';
 
@@ -73,18 +73,18 @@ type TResponseData = {
     child_collections: TFormattedChildCollection[];
 }
 
-export const get_collection_by_id = async ({ req, res }: TrequestResponse) => {
+export const get_collection_by_id = async (req: Request, res: Response) => {
 
     const { _id } = get_collection_by_id_params_schema.parse(req.params);
 
     const collection = await mg.Collection.findById<TCollectionResponse>(_id)
 
     if (!collection) {
-        throw_error({ message: 'Collection not found', status_code: 404 });
+        throw_error('Collection not found', 404);
     }
 
     if (!collection!.isPublished) {
-        throw_error({ message: 'Collection not available', status_code: 404 });
+        throw_error('Collection not available', 404);
     }
 
     const articles_with_authors = mg.Article.find<TArticleWithAuthors>({
@@ -95,6 +95,10 @@ export const get_collection_by_id = async ({ req, res }: TrequestResponse) => {
         .populate('author', 'name email profileImage bio role')
         .populate('coAuthors', 'name email profileImage bio role')
         .sort({ title: 1 });
+
+    if (!articles_with_authors) {
+        throw_error('Articles not found', 404);
+    }
 
     const child_collections = mg.Collection.find<TCollectionResponse>({
         parentCollection: collection!._id,

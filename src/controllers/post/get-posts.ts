@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
+import { throw_error } from '../../utils/throw-error';
 
-export const get_posts = async ({ req, res }: TrequestResponse) => {
+export const get_posts = async (req: Request, res: Response) => {
 
-    const { page, limit } = get_posts_schema.parse(req.query);
+    const { page, limit } = z_get_posts_req_query.parse(req.query);
 
     const posts = mg.Post.find()
         .skip((page - 1) * limit)
@@ -14,6 +15,10 @@ export const get_posts = async ({ req, res }: TrequestResponse) => {
     const get_total_posts = mg.Post.countDocuments();
 
     const [posts_data, total_posts] = await Promise.all([posts, get_total_posts]);
+
+    if (!posts_data) {
+        throw_error('Posts not found', 404);
+    }
 
     const total_pages = Math.ceil(total_posts / limit);
 
@@ -30,7 +35,7 @@ export const get_posts = async ({ req, res }: TrequestResponse) => {
 
 }
 
-const get_posts_schema = z.strictObject({
+const z_get_posts_req_query = z.strictObject({
     page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
     limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100))
 });

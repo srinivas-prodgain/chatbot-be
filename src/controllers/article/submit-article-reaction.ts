@@ -1,20 +1,20 @@
 import { Article } from '../../models/article';
 import { ARTICLE_REACTIONS } from '../../models/article';
 import { throw_error } from '../../utils/throw-error';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
 import { z } from 'zod';
 
 
-export const submit_article_reaction = async ({ req, res }: TrequestResponse) => {
+export const submit_article_reaction = async (req: Request, res: Response) => {
     const { _id } = z_submit_article_reaction_params.parse(req.params);
-    const { reaction, user_id } = z_submit_article_reaction_body.parse(req.body);
+    const { user_id } = z_submit_article_reaction_query.parse(req.query);
+    const { reaction } = z_submit_article_reaction_body.parse(req.body);
 
     // First, try to find if this user already has a reaction on this article
     const article = await Article.findById(_id);
 
     if (!article) {
-        throw_error({ message: 'Article not found', status_code: 404 });
-        return; // This will never be reached due to throw_error, but helps TypeScript
+        throw_error('Article not found', 404);
     }
 
     // Check if user already has a reaction
@@ -41,7 +41,7 @@ export const submit_article_reaction = async ({ req, res }: TrequestResponse) =>
     }
 
     if (!updatedArticle) {
-        throw_error({ message: 'Failed to update article reaction', status_code: 500 });
+        throw_error('Failed to update article reaction', 500);
     }
 
     res.status(200).json({
@@ -53,7 +53,10 @@ const z_submit_article_reaction_params = z.object({
     _id: z.string().min(1, 'Article ID is required')
 });
 
+const z_submit_article_reaction_query = z.object({
+    user_id: z.string().min(1, 'User ID is required')
+});
+
 const z_submit_article_reaction_body = z.object({
     reaction: z.enum(ARTICLE_REACTIONS),
-    user_id: z.string().min(1, 'User ID is required')
 });

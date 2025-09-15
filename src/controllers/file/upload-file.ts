@@ -1,5 +1,5 @@
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
+import { Request, Response } from 'express';
 import { TProcessingStatus } from '../../types/shared';
 import { throw_error } from '../../utils/throw-error';
 import { process_file_in_background } from '../../utils/upload-file-in-background';
@@ -16,15 +16,13 @@ export type TUploadResponse = {
 }
 
 
-export const handle_upload = async ({ req, res }: TrequestResponse) => {
-
+export const handle_upload = async (req: Request, res: Response) => {
 
     if (!req.file) {
-        throw_error({ message: 'No file uploaded', status_code: 400 });
-        return;
+        throw_error('No file uploaded', 400);
     }
 
-    const user_id = upload_file_schema.parse(req.body).user_id;
+    const { user_id } = z_upload_file_req_query.parse(req.query);
 
 
     const document_file = await mg.DocumentFile.create({
@@ -51,12 +49,12 @@ export const handle_upload = async ({ req, res }: TrequestResponse) => {
         mime_type: req.file.mimetype,
         user_id
     }).catch(error => {
-        throw_error({ message: `File upload failed: ${error}`, status_code: 500 });
+        throw_error(`File upload failed: ${error}`, 500);
     });
 
 };
 
 
-const upload_file_schema = z.object({
-    user_id: z.string()
+const z_upload_file_req_query = z.object({
+    user_id: z.string().min(1, 'User ID is required')
 }); 

@@ -1,6 +1,7 @@
 import { mg } from '../../config/mg';
-import { TrequestResponse } from '../../types/shared';
 import { Schema } from 'mongoose';
+import { throw_error } from '../../utils/throw-error';
+import { Request, Response } from 'express';
 
 type TArticle = {
     _id: Schema.Types.ObjectId;
@@ -17,14 +18,18 @@ type TResponseData = {
     total_count: number;
 };
 
-export const get_top_articles = async ({ req, res }: TrequestResponse) => {
-    // Get the 4 newest published articles - only ID and title
+export const get_top_articles = async (req: Request, res: Response) => {
+
     const articles = await mg.Article.find<TArticle>({
         isPublished: true
     })
         .select('_id title')
         .sort({ createdAt: -1 })
         .limit(4);
+
+    if (!articles) {
+        throw_error('Articles not found', 404);
+    }
 
     const formatted_articles: TFormattedArticle[] = articles.map(article => ({
         id: article._id,
