@@ -11,7 +11,7 @@ export const get_all_conversations = async (req: Request, res: Response) => {
         userId: user_id,
         status: 'active'
     })
-        .select('title userId status')
+        .select('title userId status updatedAt')
         .skip((page - 1) * limit)
         .limit(limit)
         .sort({ updatedAt: -1 }).lean();
