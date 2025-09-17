@@ -16,10 +16,7 @@ export const delete_conversation = async (req: Request, res: Response) => {
     await mg.Message.deleteMany({ conversation_id: conversation._id });
 
     res.status(200).json({
-        message: 'Conversation deleted successfully',
-        data: {
-            _id: conversation._id
-        }
+        message: 'Conversation deleted successfully'
     });
 };
 
