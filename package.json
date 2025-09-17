@@ -3,21 +3,21 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:posts": "tsx src/seeds/post-seed.ts",
-    "seed:authors": "tsx src/seeds/author-seed.ts",
-    "seed:news": "tsx src/seeds/news-seed.ts",
-    "seed:collections": "tsx src/seeds/collection-seed.ts",
-    "seed:articles": "tsx src/seeds/article-seed.ts",
-    "seed:help": "tsx src/seeds/help-seed.ts",
-    "seed:help-expanded": "tsx src/seeds/help-seed.ts",
-    "seed:all": "tsx src/seeds/master-seed.ts",
-    "init:collection-counts": "tsx src/scripts/initialize-collection-counts.ts",
-    "migrate:snake-case": "tsx migrations/run-all-migrations.ts",
-    "validate:migrations": "tsx migrations/validate-migrations.ts"
+    "seed:posts": "tsx --tsconfig tsconfig.json src/seeds/post-seed.ts",
+    "seed:authors": "tsx --tsconfig tsconfig.json src/seeds/author-seed.ts",
+    "seed:news": "tsx --tsconfig tsconfig.json src/seeds/news-seed.ts",
+    "seed:collections": "tsx --tsconfig tsconfig.json src/seeds/collection-seed.ts",
+    "seed:articles": "tsx --tsconfig tsconfig.json src/seeds/article-seed.ts",
+    "seed:help": "tsx --tsconfig tsconfig.json src/seeds/help-seed.ts",
+    "seed:help-expanded": "tsx --tsconfig tsconfig.json src/seeds/help-seed.ts",
+    "seed:all": "tsx --tsconfig tsconfig.json src/seeds/master-seed.ts",
+    "init:collection-counts": "tsx --tsconfig tsconfig.json src/scripts/initialize-collection-counts.ts",
+    "migrate:snake-case": "tsx --tsconfig tsconfig.json migrations/run-all-migrations.ts",
+    "validate:migrations": "tsx --tsconfig tsconfig.json migrations/validate-migrations.ts"
   },
   "repository": {
     "type": "git",
@@ -60,6 +60,7 @@
     "@types/pdf-parse": "^1.1.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
