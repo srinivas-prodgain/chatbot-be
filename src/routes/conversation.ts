@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import { create_conversation } from "../controllers/conversations/create-conversation";
-import { get_conversation_by_id } from "../controllers/conversations/get-conversation-by-id";
-import { get_all_conversations } from "../controllers/conversations/get-all-conversations";
-import { delete_conversation } from "../controllers/conversations/delete-conversation";
+import { create_conversation } from "@/controllers/conversations/create-conversation";
+import { get_conversation_by_id } from "@/controllers/conversations/get-conversation-by-id";
+import { get_all_conversations } from "@/controllers/conversations/get-all-conversations";
+import { delete_conversation } from "@/controllers/conversations/delete-conversation";
 
 const router = Router();
 

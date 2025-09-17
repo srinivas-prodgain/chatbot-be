@@ -1,8 +1,9 @@
-import { mg } from '../../config/mg';
-import { NEWS_REACTIONS } from '../../models/news';
-import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
 import { z } from 'zod';
+
+import { mg } from '@/config/mg';
+import { NEWS_REACTIONS } from '@/models/news';
+import { throw_error } from '@/utils/throw-error';
 
 
 export const submit_news_reaction = async (req: Request, res: Response) => {

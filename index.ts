@@ -1,7 +1,8 @@
-import app from './src/app';
 import dotenv from 'dotenv';
-import env from './src/constants/env';
-import { connect_to_db } from './src/config/db';
+
+import app from '@/app';
+import { connect_to_db } from '@/config/db';
+import env from '@/constants/env';
 
 
 dotenv.config();

@@ -1,9 +1,8 @@
+import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { mg } from '../../config/mg';
-
-import { Request, Response } from 'express';
-import { throw_error } from '../../utils/throw-error';
+import { mg } from '@/config/mg';
+import { throw_error } from '@/utils/throw-error';
 
 export const create_conversation = async (req: Request, res: Response) => {
     const { user_id } = z_create_conversation_req_query.parse(req.query);

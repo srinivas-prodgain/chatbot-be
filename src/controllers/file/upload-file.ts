@@ -1,9 +1,10 @@
-import { mg } from '../../config/mg';
 import { Request, Response } from 'express';
-import { TProcessingStatus } from '../../types/shared';
-import { throw_error } from '../../utils/throw-error';
-import { process_file_in_background } from '../../utils/upload-file-in-background';
 import { z } from 'zod';
+
+import { mg } from '@/config/mg';
+import { TProcessingStatus } from '@/types/shared';
+import { throw_error } from '@/utils/throw-error';
+import { process_file_in_background } from '@/utils/upload-file-in-background';
 
 export type TUploadResponse = {
     file_id: string;

@@ -1,4 +1,4 @@
-import { mg } from '../config/mg';
+import { mg } from '@/config/mg';
 
 /**
  * Updates the total_articles count for a collection hierarchy

@@ -1,7 +1,7 @@
 import { tool } from 'ai';
 import { z } from 'zod';
 
-import { document_embeddings_mongodb_service } from '../classes/document-embeddings-mongodb-service';
+import { document_embeddings_mongodb_service } from '@/classes/document-embeddings-mongodb-service';
 
 
 export const search_user_documents = tool({

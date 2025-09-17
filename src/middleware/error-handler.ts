@@ -1,12 +1,10 @@
-import { NextFunction, Request, Response } from 'express'
-
-import { ZodError } from 'zod'
-import { generateErrorMessage } from 'zod-error'
+import { NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
+import { generateErrorMessage } from 'zod-error';
 
 // import { log } from '@sales-os/logger'
-import type { TApiError } from '../types/shared'
-
-import CustomError from '../utils/CustomError'
+import type { TApiError } from '@/types/shared';
+import CustomError from '@/utils/CustomError';
 
 export const error_handler = (
     err: Error | ZodError | CustomError,

@@ -1,5 +1,6 @@
 import { Document, model, Schema } from "mongoose";
-import { update_collection_article_count } from "../utils/update-collection-article-count";
+
+import { update_collection_article_count } from "@/utils/update-collection-article-count";
 
 export const ARTICLE_REACTIONS = ['sad', 'middle', 'happy'] as const;
 export type ArticleReaction = typeof ARTICLE_REACTIONS[number];

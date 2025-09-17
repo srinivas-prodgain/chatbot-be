@@ -1,8 +1,9 @@
-import { z } from 'zod';
-import { mg } from '../../config/mg';
-import { throw_error } from '../../utils/throw-error';
-import { themes, languages } from '../../models/user';
 import { Request, Response } from 'express';
+import { z } from 'zod';
+
+import { mg } from '@/config/mg';
+import { themes, languages } from '@/models/user';
+import { throw_error } from '@/utils/throw-error';
 
 
 export const create_user = async (req: Request, res: Response) => {

@@ -1,8 +1,7 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express';
 
-import env from '../constants/env';
-
-import { extract_user_agent_info } from '../utils/functions'
+import env from '@/constants/env';
+import { extract_user_agent_info } from '@/utils/functions';
 
 export const success_handler = (
     req: Request,

@@ -1,8 +1,9 @@
-import { z } from 'zod';
-import { mg } from '../../config/mg';
 import { Request, Response } from 'express';
-import { throw_error } from '../../utils/throw-error';
 import { Schema } from 'mongoose';
+import { z } from 'zod';
+
+import { mg } from '@/config/mg';
+import { throw_error } from '@/utils/throw-error';
 
 type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { handle_upload } from '../controllers/file/upload-file';
-import { upload_middleware } from '../middleware/file-upload';
+import { handle_upload } from '@/controllers/file/upload-file';
+import { upload_middleware } from '@/middleware/file-upload';
 
 const router = Router();
 

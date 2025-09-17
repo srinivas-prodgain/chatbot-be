@@ -1,9 +1,10 @@
-import { z } from 'zod';
-import { mg } from '../../config/mg';
-import { Schema } from 'mongoose';
-import { createSnippet } from '../../utils/create-snippet';
-import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
+import { Schema } from 'mongoose';
+import { z } from 'zod';
+
+import { mg } from '@/config/mg';
+import { createSnippet } from '@/utils/create-snippet';
+import { throw_error } from '@/utils/throw-error';
 
 type TArticleSearchResult = {
     _id: Schema.Types.ObjectId;

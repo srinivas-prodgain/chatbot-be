@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { mg } from '../../config/mg';
-import { throw_error } from '../../utils/throw-error';
+import { mg } from '@/config/mg';
+import { throw_error } from '@/utils/throw-error';
 
 export const delete_conversation = async (req: Request, res: Response) => {
     const { _id } = z_delete_conversation_req_params.parse(req.params);

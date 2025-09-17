@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { connect_to_db } from '../config/db';
-import { initialize_all_collection_counts } from '../utils/update-collection-article-count';
+
+import { connect_to_db } from '@/config/db';
+import { initialize_all_collection_counts } from '@/utils/update-collection-article-count';
 
 async function runInitialization() {
     try {

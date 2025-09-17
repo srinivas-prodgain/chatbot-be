@@ -1,11 +1,12 @@
-import { z } from 'zod';
 import { streamText, stepCountIs, ModelMessage } from 'ai';
-import { model } from '../../services/ai';
-import { message_handling_service } from '../../services/message-handling-service';
-import { search_user_documents } from '../../tools/search-user-documents';
-import { get_system_prompt } from '../../lib/system-prompt';
-import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
+import { z } from 'zod';
+
+import { get_system_prompt } from '@/lib/system-prompt';
+import { model } from '@/services/ai';
+import { message_handling_service } from '@/services/message-handling-service';
+import { search_user_documents } from '@/tools/search-user-documents';
+import { throw_error } from '@/utils/throw-error';
 
 
 export const stream_chat = async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { stream_chat } from "../controllers/chat/stream-chat";
+import { stream_chat } from "@/controllers/chat/stream-chat";
 
 const router = Router();
 

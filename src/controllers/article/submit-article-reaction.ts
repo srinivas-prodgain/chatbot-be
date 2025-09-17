@@ -1,8 +1,8 @@
-import { Article } from '../../models/article';
-import { ARTICLE_REACTIONS } from '../../models/article';
-import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
 import { z } from 'zod';
+
+import { Article, ARTICLE_REACTIONS } from '@/models/article';
+import { throw_error } from '@/utils/throw-error';
 
 
 export const submit_article_reaction = async (req: Request, res: Response) => {

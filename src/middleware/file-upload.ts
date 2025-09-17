@@ -1,7 +1,8 @@
+import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
-import { MAX_FILE_SIZE, ALLOWED_FILE_EXTENSIONS } from '../types/file-types';
-import fs from 'fs';
+
+import { MAX_FILE_SIZE, ALLOWED_FILE_EXTENSIONS } from '@/types/file-types';
 
 
 const uploadsDir = 'uploads/';

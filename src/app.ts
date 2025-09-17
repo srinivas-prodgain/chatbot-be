@@ -5,24 +5,21 @@ import express, {
     json,
     urlencoded
 } from 'express';
-
-
 import cors from 'cors';
 import morgan from 'morgan';
-import { error_handler } from './middleware/error-handler';
 
-import env from './constants/env';
-
-import { user_router } from './routes/user';
-import { throw_error } from './utils/throw-error';
-import { post_router } from './routes/post';
-import { news_router } from './routes/news';
-import { collection_router } from './routes/collection';
-import { chat_router } from './routes/chat';
-import { file_routes } from './routes/file';
-import { conversation_router } from './routes/conversation';
-import { article_router } from './routes/article';
-import { success_handler } from './middleware/success-handler';
+import env from '@/constants/env';
+import { error_handler } from '@/middleware/error-handler';
+import { success_handler } from '@/middleware/success-handler';
+import { article_router } from '@/routes/article';
+import { chat_router } from '@/routes/chat';
+import { collection_router } from '@/routes/collection';
+import { conversation_router } from '@/routes/conversation';
+import { file_routes } from '@/routes/file';
+import { news_router } from '@/routes/news';
+import { post_router } from '@/routes/post';
+import { user_router } from '@/routes/user';
+import { throw_error } from '@/utils/throw-error';
 
 const app = express();
 

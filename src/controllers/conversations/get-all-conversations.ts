@@ -1,7 +1,8 @@
-import { z } from 'zod';
-import { mg } from '../../config/mg';
-import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
+import { z } from 'zod';
+
+import { mg } from '@/config/mg';
+import { throw_error } from '@/utils/throw-error';
 
 export const get_all_conversations = async (req: Request, res: Response) => {
 

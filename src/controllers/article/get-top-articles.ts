@@ -1,7 +1,8 @@
-import { mg } from '../../config/mg';
-import { Schema } from 'mongoose';
-import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
+import { Schema } from 'mongoose';
+
+import { mg } from '@/config/mg';
+import { throw_error } from '@/utils/throw-error';
 
 type TArticle = {
     _id: Schema.Types.ObjectId;

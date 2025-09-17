@@ -5,8 +5,8 @@ import pdfParse from 'pdf-parse';
 import mammoth from 'mammoth';
 import MarkdownIt from 'markdown-it';
 
-import { mg } from '../config/mg';
-import { get_embedding } from '../services/ai';
+import { mg } from '@/config/mg';
+import { get_embedding } from '@/services/ai';
 import {
     DEFAULT_CHUNK_SIZE,
     DEFAULT_OVERLAP_SIZE,
@@ -17,8 +17,8 @@ import {
     SEARCH_SIMILARITY_THRESHOLD,
     VECTOR_INDEX_NAME,
     SPECIFIC_DOCUMENT_INDEX_NAME,
-} from '../constants/document-processing';
-import { TProcessingStatus } from '../types/shared';
+} from '@/constants/document-processing';
+import { TProcessingStatus } from '@/types/shared';
 
 export type TDocumentMetadata = {
     file_id: string;
