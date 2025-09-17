@@ -6,9 +6,9 @@ type TCollection = Document & {
     description: string;
     slug: string;
     icon: string;
-    parentCollection?: Schema.Types.ObjectId;
+    parent_collection?: Schema.Types.ObjectId;
     level: number;
-    isPublished: boolean;
+    is_published: boolean;
     total_articles: number;
 }
 
@@ -29,7 +29,7 @@ const CollectionSchema = new Schema<TCollection>({
         index: true
     },
     icon: String,
-    parentCollection: {
+    parent_collection: {
         type: Schema.Types.ObjectId,
         ref: 'Collection',
         default: null
@@ -38,7 +38,7 @@ const CollectionSchema = new Schema<TCollection>({
         type: Number,
         default: 0  // 0 for root, 1 for first sub, 2 for second sub, etc.
     },
-    isPublished: {
+    is_published: {
         type: Boolean,
         default: true
     },

@@ -11,7 +11,7 @@ export const create_conversation = async (req: Request, res: Response) => {
 
     const conversation = await mg.Conversation.create({
         title: title || 'New Chat',
-        userId: user_id
+        user_id: user_id
     });
 
     if (!conversation) {

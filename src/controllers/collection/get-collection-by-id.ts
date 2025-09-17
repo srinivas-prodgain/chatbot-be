@@ -8,7 +8,7 @@ type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;
     name: string;
     email: string;
-    profileImage: string;
+    profile_image: string;
     bio: string;
     role: string;
 }
@@ -17,7 +17,7 @@ type TArticleWithAuthors = {
     _id: Schema.Types.ObjectId;
     title: string;
     author: TPopulatedAuthor;
-    coAuthors: TPopulatedAuthor[];
+    co_authors: TPopulatedAuthor[];
 }
 
 type TCollectionResponse = {
@@ -27,9 +27,9 @@ type TCollectionResponse = {
     slug: string;
     icon: string;
     total_articles: number;
-    isPublished: boolean;
+    is_published: boolean;
     level: number;
-    parentCollection: Schema.Types.ObjectId;
+    parent_collection: Schema.Types.ObjectId;
 }
 
 type TFormattedAuthor = {
@@ -83,17 +83,17 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
         throw_error('Collection not found', 404);
     }
 
-    if (!collection!.isPublished) {
+    if (!collection!.is_published) {
         throw_error('Collection not available', 404);
     }
 
     const articles_with_authors = mg.Article.find<TArticleWithAuthors>({
         collection_id: collection!._id,
-        isPublished: true
+        is_published: true
     })
-        .select('title _id author coAuthors')
-        .populate('author', 'name email profileImage bio role')
-        .populate('coAuthors', 'name email profileImage bio role')
+        .select('title _id author co_authors')
+        .populate('author', 'name email profile_image bio role')
+        .populate('co_authors', 'name email profile_image bio role')
         .sort({ title: 1 });
 
     if (!articles_with_authors) {
@@ -101,8 +101,8 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
     }
 
     const child_collections = mg.Collection.find<TCollectionResponse>({
-        parentCollection: collection!._id,
-        isPublished: true
+        parent_collection: collection!._id,
+        is_published: true
     })
         .select('title description slug icon total_articles _id')
         .sort({ title: 1 });
@@ -123,7 +123,7 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
                 id: author._id,
                 name: author.name,
                 email: author.email,
-                profile_image: author.profileImage,
+                profile_image: author.profile_image,
                 bio: author.bio,
                 role: author.role
             });
@@ -133,8 +133,8 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
     articles_with_authors_data.forEach(article => {
         addAuthorToList(article.author);
 
-        if (article.coAuthors && article.coAuthors.length > 0) {
-            article.coAuthors.forEach(coAuthor => {
+        if (article.co_authors && article.co_authors.length > 0) {
+            article.co_authors.forEach(coAuthor => {
                 addAuthorToList(coAuthor);
             });
         }
@@ -161,7 +161,7 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
         slug: collection!.slug,
         icon: collection!.icon,
         level: collection!.level,
-        parent_collection: collection!.parentCollection,
+        parent_collection: collection!.parent_collection,
         total_articles: collection!.total_articles
     };
 

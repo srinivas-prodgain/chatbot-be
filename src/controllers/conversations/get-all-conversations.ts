@@ -8,16 +8,16 @@ export const get_all_conversations = async (req: Request, res: Response) => {
     const { page, limit, user_id } = get_all_conversations_query_schema.parse(req.query);
 
     const conversations = mg.Conversation.find({
-        userId: user_id,
+        user_id: user_id,
         status: 'active'
     })
-        .select('title userId status updatedAt')
+        .select('title user_id status updatedAt')
         .skip((page - 1) * limit)
         .limit(limit)
         .sort({ updatedAt: -1 }).lean();
 
     const get_total_conversations = mg.Conversation.countDocuments({
-        userId: user_id,
+        user_id: user_id,
         status: 'active'
     });
 

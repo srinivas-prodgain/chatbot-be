@@ -8,7 +8,7 @@ type TStatus = (typeof statuses)[number];
 
 export type TConversation = Document & {
     title: string;
-    userId: Schema.Types.ObjectId;
+    user_id: Schema.Types.ObjectId;
     status: TStatus;
 }
 
@@ -18,7 +18,7 @@ const conversationSchema = new Schema<TConversation>({
         type: String,
         required: true
     },
-    userId: {
+    user_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,

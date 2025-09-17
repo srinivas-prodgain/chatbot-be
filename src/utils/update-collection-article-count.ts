@@ -18,8 +18,8 @@ export async function update_collection_article_count(collectionId: any) {
         });
 
         // If this collection has a parent, update parent counts recursively
-        if (collection.parentCollection) {
-            await update_collection_article_count(collection.parentCollection);
+        if (collection.parent_collection) {
+            await update_collection_article_count(collection.parent_collection);
         }
     } catch (error) {
         console.error('Error updating collection article count:', error);
@@ -35,13 +35,13 @@ async function calculate_collection_article_count(collectionId: any): Promise<nu
         // Count articles directly in this collection
         const direct_articles = await mg.Article.countDocuments({
             collection_id: collectionId,
-            isPublished: true
+            is_published: true
         });
 
         // Find all sub-collections
         const sub_collections = await mg.Collection.find({
-            parentCollection: collectionId,
-            isPublished: true
+            parent_collection: collectionId,
+            is_published: true
         }).select('_id');
 
         let subArticles = 0;

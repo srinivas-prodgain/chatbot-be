@@ -16,11 +16,11 @@ type TArticle = Document & {
     excerpt: string;
     collection_id: Schema.Types.ObjectId;
     author: Schema.Types.ObjectId;
-    coAuthors: Schema.Types.ObjectId[];
-    relatedArticles: Schema.Types.ObjectId[];
+    co_authors: Schema.Types.ObjectId[];
+    related_articles: Schema.Types.ObjectId[];
     tags: string[];
-    readTime: number;
-    isPublished: boolean;
+    read_time: number;
+    is_published: boolean;
     reactions: ArticleReactionItem[];
 }
 
@@ -56,20 +56,20 @@ const ArticleSchema = new Schema<TArticle>({
         ref: 'Author',
         required: true
     },
-    coAuthors: [{
+    co_authors: [{
         type: Schema.Types.ObjectId,
         ref: 'Author'
     }],
-    relatedArticles: [{
+    related_articles: [{
         type: Schema.Types.ObjectId,
         ref: 'Article'
     }],
     tags: [String],
-    readTime: {
+    read_time: {
         type: Number,  // in minutes
         default: 5
     },
-    isPublished: {
+    is_published: {
         type: Boolean,
         default: true
     },

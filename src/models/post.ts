@@ -7,11 +7,11 @@ type TCategory = (typeof categories)[number];
 type TPost = Document & {
     title: string;
     description: string;
-    imageUrl: string;
-    linkUrl: string;
-    linkText: string;
+    image_url: string;
+    link_url: string;
+    link_text: string;
     category: TCategory;
-    isActive: boolean;
+    is_active: boolean;
     tags: string[];
 }
 
@@ -25,15 +25,15 @@ const postSchema = new Schema<TPost>({
         type: String,
         required: true
     },
-    imageUrl: {
+    image_url: {
         type: String,
         required: true
     },
-    linkUrl: {
+    link_url: {
         type: String,
         required: true
     },
-    linkText: {
+    link_text: {
         type: String,
         default: 'Learn More'
     },
@@ -42,7 +42,7 @@ const postSchema = new Schema<TPost>({
         enum: categories,
         required: true
     },
-    isActive: {
+    is_active: {
         type: Boolean,
         default: true
     },
