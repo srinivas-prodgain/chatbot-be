@@ -3,14 +3,14 @@ import { Document, model, Schema } from "mongoose";
 type TAuthor = Document & {
     name: string;
     email: string;
-    profileImage: string;
+    profile_image: string;
     bio: string;
     role: string;
-    socialLinks: {
+    social_links: {
         linkedin: string;
         twitter: string;
     };
-    isActive: boolean;
+    is_active: boolean;
 }
 
 
@@ -26,7 +26,7 @@ const authorSchema = new Schema<TAuthor>({
         unique: true,
         lowercase: true
     },
-    profileImage: {
+    profile_image: {
         type: String,
         required: true
     },
@@ -38,11 +38,11 @@ const authorSchema = new Schema<TAuthor>({
         type: String,
         required: true
     },
-    socialLinks: {
+    social_links: {
         linkedin: String,
         twitter: String
     },
-    isActive: {
+    is_active: {
         type: Boolean,
         default: true
     }

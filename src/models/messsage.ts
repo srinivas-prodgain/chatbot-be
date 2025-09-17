@@ -6,7 +6,7 @@ export type TSender = (typeof senders)[number];
 
 
 export type TMessage = Document & {
-    userId: Schema.Types.ObjectId;
+    user_id: Schema.Types.ObjectId;
     message: string;
     sender: TSender;
     conversation_id: Schema.Types.ObjectId;
@@ -15,7 +15,7 @@ export type TMessage = Document & {
 }
 
 const messageSchema = new Schema<TMessage>({
-    userId: {
+    user_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true

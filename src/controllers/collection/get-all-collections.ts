@@ -9,7 +9,7 @@ export const get_all_collections = async (req: Request, res: Response) => {
 
     const collections = mg.Collection.find({
         level: 0,
-        isPublished: true
+        is_published: true
     })
         .select('title description slug icon total_articles')
         .skip((page - 1) * limit)
@@ -18,7 +18,7 @@ export const get_all_collections = async (req: Request, res: Response) => {
 
     const get_total_collections = mg.Collection.countDocuments({
         level: 0,
-        isPublished: true
+        is_published: true
     });
 
     const [collections_data, total_collections] = await Promise.all([collections, get_total_collections]);

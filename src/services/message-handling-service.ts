@@ -27,7 +27,7 @@ export const message_handling_service = {
             conversation = new mg.Conversation({
                 _id: conversation_id,
                 title: DEFAULT_CONVERSATION_TITLE,
-                userId: user_id
+                user_id: user_id
             });
             await conversation.save();
         }
@@ -40,7 +40,7 @@ export const message_handling_service = {
             message,
             sender: 'user',
             conversation_id,
-            userId: user_id
+            user_id: user_id
         });
         await user_message.save();
     },
@@ -54,7 +54,7 @@ export const message_handling_service = {
             message: ai_response,
             sender: 'assistant',
             conversation_id,
-            userId: user_id
+            user_id: user_id
         });
 
         const save_message_promise = ai_message.save();

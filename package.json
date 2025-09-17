@@ -15,7 +15,9 @@
     "seed:help": "tsx src/seeds/help-seed.ts",
     "seed:help-expanded": "tsx src/seeds/help-seed.ts",
     "seed:all": "tsx src/seeds/master-seed.ts",
-    "init:collection-counts": "tsx src/scripts/initialize-collection-counts.ts"
+    "init:collection-counts": "tsx src/scripts/initialize-collection-counts.ts",
+    "migrate:snake-case": "tsx migrations/run-all-migrations.ts",
+    "validate:migrations": "tsx migrations/validate-migrations.ts"
   },
   "repository": {
     "type": "git",

@@ -21,7 +21,7 @@ type TResponseData = {
 export const get_top_articles = async (req: Request, res: Response) => {
 
     const articles = await mg.Article.find<TArticle>({
-        isPublished: true
+        is_published: true
     })
         .select('_id title')
         .sort({ createdAt: -1 })

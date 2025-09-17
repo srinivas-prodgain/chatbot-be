@@ -9,7 +9,7 @@ type TArticleSearchResult = {
     _id: Schema.Types.ObjectId;
     title: string;
     content: string;
-    isPublished: boolean;
+    is_published: boolean;
 }
 
 type TFormattedSearchArticle = {
@@ -32,7 +32,7 @@ export const get_articles_by_search = async (req: Request, res: Response) => {
 
     // Search for articles where the search term appears in title or content
     const articles = await mg.Article.find<TArticleSearchResult>({
-        isPublished: true,
+        is_published: true,
         $or: [
             { title: { $regex: search_regex } },
             { content: { $regex: search_regex } }

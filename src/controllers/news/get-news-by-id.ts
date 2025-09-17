@@ -8,7 +8,7 @@ import { Schema } from 'mongoose';
 type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;
     name: string;
-    profileImage: string;
+    profile_image: string;
     bio: string;
     role: string;
 }
@@ -19,15 +19,15 @@ type TFormattedNews = {
     title: string;
     slug: string;
     content: string;
-    imageUrl: string;
-    thumbnailUrl: string;
+    image_url: string;
+    thumbnail_url: string;
     author: TPopulatedAuthor;
     category: string;
     tags: string[];
-    publishedAt: Date;
-    isPublished: boolean;
-    isFeatured: boolean;
-    readTime: number;
+    published_at: Date;
+    is_published: boolean;
+    is_featured: boolean;
+    read_time: number;
     reaction?: NewsReactionItem;
 }
 
@@ -36,15 +36,15 @@ type TNewsWithPopulatedAuthors = {
     title: string;
     slug: string;
     content: string;
-    imageUrl: string;
-    thumbnailUrl: string;
+    image_url: string;
+    thumbnail_url: string;
     author: TPopulatedAuthor;
     category: string;
     tags: string[];
-    publishedAt: Date;
-    isPublished: boolean;
-    isFeatured: boolean;
-    readTime: number;
+    published_at: Date;
+    is_published: boolean;
+    is_featured: boolean;
+    read_time: number;
     reactions: NewsReactionItem[];
 }
 
@@ -64,7 +64,7 @@ export const get_news_by_id = async (req: Request, res: Response) => {
         throw_error("News not found", 404);
     }
 
-    if (!news.isPublished) {
+    if (!news.is_published) {
         throw_error("News is not published", 403);
     }
 
@@ -75,15 +75,15 @@ export const get_news_by_id = async (req: Request, res: Response) => {
         title: news.title,
         slug: news.slug,
         content: news.content,
-        imageUrl: news.imageUrl,
-        thumbnailUrl: news.thumbnailUrl,
+        image_url: news.image_url,
+        thumbnail_url: news.thumbnail_url,
         author: news.author,
         category: news.category,
         tags: news.tags,
-        publishedAt: news.publishedAt,
-        isPublished: news.isPublished,
-        isFeatured: news.isFeatured,
-        readTime: news.readTime,
+        published_at: news.published_at,
+        is_published: news.is_published,
+        is_featured: news.is_featured,
+        read_time: news.read_time,
         reaction: user_reaction?.[0],
     }
 

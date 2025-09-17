@@ -16,15 +16,15 @@ type TNews = Document & {
     title: string;
     slug: string;
     content: string;
-    imageUrl: string;
-    thumbnailUrl: string;
+    image_url: string;
+    thumbnail_url: string;
     author: Schema.Types.ObjectId;
     category: TCategory;
     tags: string[];
-    publishedAt: Date;
-    isPublished: boolean;
-    isFeatured: boolean;
-    readTime: number;
+    published_at: Date;
+    is_published: boolean;
+    is_featured: boolean;
+    read_time: number;
     reactions: NewsReactionItem[];
 }
 
@@ -44,11 +44,11 @@ const newsSchema = new Schema<TNews>({
         type: String,
         required: true
     },
-    imageUrl: {
+    image_url: {
         type: String,
         required: true
     },
-    thumbnailUrl: {
+    thumbnail_url: {
         type: String,
         required: true
     },
@@ -66,20 +66,20 @@ const newsSchema = new Schema<TNews>({
         type: String,
         trim: true
     }],
-    publishedAt: {
+    published_at: {
         type: Date,
         default: Date.now,
         index: true
     },
-    isPublished: {
+    is_published: {
         type: Boolean,
         default: true
     },
-    isFeatured: {
+    is_featured: {
         type: Boolean,
         default: false
     },
-    readTime: {
+    read_time: {
         type: Number,  // in minutes
         default: 5
     },
