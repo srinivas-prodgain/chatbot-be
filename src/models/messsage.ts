@@ -2,14 +2,16 @@ import { Document, model, Schema } from "mongoose";
 
 
 export const senders = ['user', 'assistant'] as const;
-type TSender = (typeof senders)[number];
+export type TSender = (typeof senders)[number];
 
 
-type TMessage = Document & {
+export type TMessage = Document & {
     userId: Schema.Types.ObjectId;
     message: string;
     sender: TSender;
     conversation_id: Schema.Types.ObjectId;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const messageSchema = new Schema<TMessage>({

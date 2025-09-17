@@ -2,6 +2,7 @@ import { mg } from '../config/mg';
 import { TConversation } from '../models/conversation';
 import { Types } from 'mongoose';
 import { generate_conversation_title } from './conversation-title-service';
+import { TSender } from '../models/messsage';
 
 export type TMessageHandlingParams = {
     conversation_id: string;
@@ -10,6 +11,13 @@ export type TMessageHandlingParams = {
 };
 
 const DEFAULT_CONVERSATION_TITLE = 'New Chat';
+
+type ConversationIdentifier = Types.ObjectId | string;
+type ConversationHistoryMessage = {
+    message: string;
+    sender: TSender;
+    createdAt: Date;
+};
 
 export const message_handling_service = {
     async get_or_create_conversation({ conversation_id, message, user_id }: TMessageHandlingParams): Promise<TConversation> {
@@ -27,7 +35,7 @@ export const message_handling_service = {
         return conversation;
     },
 
-    async save_user_message({ message, conversation_id, user_id }: { message: string, conversation_id: Types.ObjectId, user_id: string }) {
+    async save_user_message({ message, conversation_id, user_id }: { message: string, conversation_id: ConversationIdentifier, user_id: string }) {
         const user_message = new mg.Message({
             message,
             sender: 'user',
@@ -37,7 +45,7 @@ export const message_handling_service = {
         await user_message.save();
     },
 
-    async save_ai_message({ ai_response, conversation_id, user_id }: { ai_response: string, conversation_id: Types.ObjectId, user_id: string }) {
+    async save_ai_message({ ai_response, conversation_id, user_id }: { ai_response: string, conversation_id: ConversationIdentifier, user_id: string }) {
         if (!ai_response.trim()) {
             return;
         }
@@ -83,11 +91,12 @@ export const message_handling_service = {
         await Promise.all([save_message_promise, update_conversation_promise]);
     },
 
-    async get_conversation_history({ conversation_id }: { conversation_id: Types.ObjectId }) {
-        const messages = await mg.Message.find({ conversation_id })
+    async get_conversation_history({ conversation_id }: { conversation_id: ConversationIdentifier }): Promise<ConversationHistoryMessage[]> {
+        const messages: ConversationHistoryMessage[] = await mg.Message.find({ conversation_id })
             .sort({ createdAt: 1 }) // Sort by creation time (oldest first)
-            .select('message sender createdAt')
-            .lean();
+            .select({ message: 1, sender: 1, createdAt: 1, _id: 0 })
+            .lean()
+            .exec();
 
         return messages;
     }
