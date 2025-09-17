@@ -99,4 +99,15 @@ const newsSchema = new Schema<TNews>({
     timestamps: true
 });
 
-export const News = model('News', newsSchema);
+// Create indexes for optimized queries
+newsSchema.index({ author: 1 });
+newsSchema.index({ category: 1 });
+newsSchema.index({ is_published: 1 });
+newsSchema.index({ is_featured: 1 });
+newsSchema.index({ tags: 1 });
+newsSchema.index({ published_at: -1 }); // Descending for latest first
+newsSchema.index({ is_published: 1, published_at: -1 }); // Compound index for published articles sorted by date
+newsSchema.index({ is_featured: 1, is_published: 1 }); // Compound index for featured published articles
+newsSchema.index({ category: 1, is_published: 1 }); // Compound index for category filtering
+
+export const News = model<TNews>('News', newsSchema);

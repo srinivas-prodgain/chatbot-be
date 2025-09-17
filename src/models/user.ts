@@ -33,4 +33,7 @@ const userSchema = new Schema<TUser>({
     timestamps: true
 });
 
-export const User = model('User', userSchema);
+// Create indexes for optimized queries
+userSchema.index({ createdAt: -1 }); // For sorting by registration date
+
+export const User = model<TUser>('User', userSchema);

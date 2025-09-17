@@ -90,36 +90,23 @@ const ArticleSchema = new Schema<TArticle>({
     timestamps: true
 });
 
+// Create indexes for optimized queries
+ArticleSchema.index({ author: 1 });
+ArticleSchema.index({ co_authors: 1 });
+ArticleSchema.index({ is_published: 1 });
+ArticleSchema.index({ tags: 1 });
+ArticleSchema.index({ related_articles: 1 });
+ArticleSchema.index({ collection_id: 1, is_published: 1 }); // Compound index for published articles in collections
+ArticleSchema.index({ author: 1, is_published: 1 }); // Compound index for published articles by author
+ArticleSchema.index({ createdAt: -1 }); // For sorting by creation date
+ArticleSchema.index({ updatedAt: -1 }); // For sorting by update date
+
 // Middleware to update collection article count after article operations
 ArticleSchema.post('save', async function (doc) {
     try {
         await update_collection_article_count(doc.collection_id);
     } catch (error) {
         console.error('Error updating collection count after article save:', error);
-    }
-});
-
-ArticleSchema.pre('deleteOne', async function () {
-    try {
-        if (this.getQuery && this.getQuery()._id) {
-            const doc = await this.model.findById(this.getQuery()._id);
-            if (doc) {
-                this.set('_originalCollectionId', doc.collection_id);
-            }
-        }
-    } catch (error) {
-        console.error('Error preparing for article delete:', error);
-    }
-});
-
-ArticleSchema.post('deleteOne', async function () {
-    try {
-        const originalCollectionId = this.get('_originalCollectionId');
-        if (originalCollectionId) {
-            await update_collection_article_count(originalCollectionId);
-        }
-    } catch (error) {
-        console.error('Error updating collection count after article delete:', error);
     }
 });
 
@@ -150,4 +137,4 @@ ArticleSchema.post('findOneAndUpdate', async function (doc) {
     }
 });
 
-export const Article = model('Article', ArticleSchema);
+export const Article = model<TArticle>('Article', ArticleSchema);

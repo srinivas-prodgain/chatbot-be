@@ -33,4 +33,10 @@ const conversationSchema = new Schema<TConversation>({
     timestamps: true
 });
 
-export const Conversation = model('Conversation', conversationSchema);
+// Create indexes for optimized queries
+conversationSchema.index({ status: 1 });
+conversationSchema.index({ user_id: 1, status: 1 }); // Compound index for user conversations by status
+conversationSchema.index({ createdAt: -1 }); // For sorting by creation date
+conversationSchema.index({ updatedAt: -1 }); // For sorting by last activity
+
+export const Conversation = model<TConversation>('Conversation', conversationSchema);

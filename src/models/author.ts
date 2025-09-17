@@ -50,4 +50,11 @@ const authorSchema = new Schema<TAuthor>({
     timestamps: true
 });
 
-export const Author = model('Author', authorSchema);
+// Create indexes for optimized queries
+authorSchema.index({ email: 1 }); // Email is already unique, but explicit index for lookups
+authorSchema.index({ is_active: 1 });
+authorSchema.index({ role: 1 });
+authorSchema.index({ is_active: 1, role: 1 }); // Compound index for active authors by role
+authorSchema.index({ name: 1 }); // For searching authors by name
+
+export const Author = model<TAuthor>('Author', authorSchema);

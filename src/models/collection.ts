@@ -51,4 +51,12 @@ const CollectionSchema = new Schema<TCollection>({
     timestamps: true
 });
 
-export const Collection = model('Collection', CollectionSchema);
+// Create indexes for optimized queries
+CollectionSchema.index({ parent_collection: 1 });
+CollectionSchema.index({ level: 1 });
+CollectionSchema.index({ is_published: 1 });
+CollectionSchema.index({ parent_collection: 1, level: 1 }); // Compound index for hierarchical queries
+CollectionSchema.index({ is_published: 1, level: 1 }); // Compound index for published collections by level
+CollectionSchema.index({ total_articles: -1 }); // For sorting by article count
+
+export const Collection = model<TCollection>('Collection', CollectionSchema);
