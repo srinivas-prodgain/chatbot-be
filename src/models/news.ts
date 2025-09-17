@@ -12,7 +12,7 @@ export const categories = ['ai-news', 'company-news', 'product-update', 'industr
 type TCategory = (typeof categories)[number];
 
 
-type TNews = Document & {
+export type TNews = Document & {
     title: string;
     slug: string;
     content: string;

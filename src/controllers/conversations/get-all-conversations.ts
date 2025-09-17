@@ -3,12 +3,13 @@ import { z } from 'zod';
 
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
+import { TConversation } from '@/models/conversation';
 
 export const get_all_conversations = async (req: Request, res: Response) => {
 
     const { page, limit, user_id } = get_all_conversations_query_schema.parse(req.query);
 
-    const conversations = mg.Conversation.find({
+    const conversations = mg.Conversation.find<TConversation>({
         user_id: user_id,
         status: 'active'
     })

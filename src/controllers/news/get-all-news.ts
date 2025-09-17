@@ -3,12 +3,13 @@ import { z } from 'zod';
 
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
+import { TNews } from '@/models/news';
 
 export const get_all_news = async (req: Request, res: Response) => {
 
     const { page, limit } = z_get_all_news_req_query.parse(req.query);
 
-    const news = mg.News.find({ is_published: true })
+    const news = mg.News.find<TNews>({ is_published: true })
         .select('title slug content image_url tags _id')
         .skip((page - 1) * limit)
         .limit(limit)

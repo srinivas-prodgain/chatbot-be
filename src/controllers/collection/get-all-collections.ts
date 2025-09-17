@@ -3,12 +3,13 @@ import { z } from 'zod';
 
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
+import { TCollection } from '@/models/collection';
 
 export const get_all_collections = async (req: Request, res: Response) => {
 
     const { page, limit } = get_all_collections_query_schema.parse(req.query);
 
-    const collections = mg.Collection.find({
+    const collections = mg.Collection.find<TCollection>({
         level: 0,
         is_published: true
     })

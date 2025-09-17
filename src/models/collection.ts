@@ -1,7 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 
 
-type TCollection = Document & {
+export type TCollection = Document & {
     title: string;
     description: string;
     slug: string;

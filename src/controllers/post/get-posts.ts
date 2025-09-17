@@ -3,12 +3,13 @@ import { z } from 'zod';
 
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
+import { TPost } from '@/models/post';
 
 export const get_posts = async (req: Request, res: Response) => {
 
     const { page, limit } = z_get_posts_req_query.parse(req.query);
 
-    const posts = mg.Post.find()
+    const posts = mg.Post.find<TPost>()
         .skip((page - 1) * limit)
         .limit(limit)
         .sort({ createdAt: -1 });
