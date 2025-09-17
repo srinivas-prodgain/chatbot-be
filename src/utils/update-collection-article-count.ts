@@ -4,22 +4,22 @@ import { mg } from '../config/mg';
  * Updates the total_articles count for a collection hierarchy
  * This function calculates and updates the count for the collection and all its parent collections
  */
-export async function updateCollectionArticleCount(collectionId: any) {
+export async function update_collection_article_count(collectionId: any) {
     try {
         const collection = await mg.Collection.findById(collectionId);
         if (!collection) return;
 
         // Calculate total articles for this collection
-        const totalArticles = await calculateCollectionArticleCount(collectionId);
+        const total_articles = await calculate_collection_article_count(collectionId);
 
         // Update this collection's count
         await mg.Collection.findByIdAndUpdate(collectionId, {
-            total_articles: totalArticles
+            total_articles: total_articles
         });
 
         // If this collection has a parent, update parent counts recursively
         if (collection.parentCollection) {
-            await updateCollectionArticleCount(collection.parentCollection);
+            await update_collection_article_count(collection.parentCollection);
         }
     } catch (error) {
         console.error('Error updating collection article count:', error);
@@ -30,16 +30,16 @@ export async function updateCollectionArticleCount(collectionId: any) {
  * Calculates the total number of articles in a collection hierarchy
  * Includes articles directly in the collection and all sub-collections
  */
-async function calculateCollectionArticleCount(collectionId: any): Promise<number> {
+async function calculate_collection_article_count(collectionId: any): Promise<number> {
     try {
         // Count articles directly in this collection
-        const directArticles = await mg.Article.countDocuments({
+        const direct_articles = await mg.Article.countDocuments({
             collection_id: collectionId,
             isPublished: true
         });
 
         // Find all sub-collections
-        const subCollections = await mg.Collection.find({
+        const sub_collections = await mg.Collection.find({
             parentCollection: collectionId,
             isPublished: true
         }).select('_id');
@@ -47,11 +47,11 @@ async function calculateCollectionArticleCount(collectionId: any): Promise<numbe
         let subArticles = 0;
 
         // Recursively count articles in sub-collections
-        for (const subCollection of subCollections) {
-            subArticles += await calculateCollectionArticleCount(subCollection._id);
+        for (const subCollection of sub_collections) {
+            subArticles += await calculate_collection_article_count(subCollection._id);
         }
 
-        return directArticles + subArticles;
+        return direct_articles + subArticles;
     } catch (error) {
         console.error('Error calculating collection article count:', error);
         return 0;
@@ -62,18 +62,18 @@ async function calculateCollectionArticleCount(collectionId: any): Promise<numbe
  * Initializes article counts for all collections
  * Use this function to populate the total_articles field for existing collections
  */
-export async function initializeAllCollectionCounts() {
+export async function initialize_all_collection_counts() {
     try {
         console.log('🔄 Initializing article counts for all collections...');
 
         const collections = await mg.Collection.find({}).sort({ level: -1 }); // Start from deepest level
 
         for (const collection of collections) {
-            const totalArticles = await calculateCollectionArticleCount(collection._id);
+            const total_articles = await calculate_collection_article_count(collection._id);
             await mg.Collection.findByIdAndUpdate(collection._id, {
-                total_articles: totalArticles
+                total_articles: total_articles
             });
-            console.log(`✅ Updated ${collection.title}: ${totalArticles} articles`);
+            console.log(`✅ Updated ${collection.title}: ${total_articles} articles`);
         }
 
         console.log('🎉 All collection article counts initialized successfully!');

@@ -1,5 +1,5 @@
-export const allowedFileTypes = ['pdf', 'txt', 'docx', 'md'] as const;
-export type TAllowedFileTypes = (typeof allowedFileTypes)[number];
+export const allowed_file_types = ['pdf', 'txt', 'docx', 'md'] as const;
+export type TAllowedFileTypes = (typeof allowed_file_types)[number];
 
 export const ALLOWED_FILE_EXTENSIONS: Record<TAllowedFileTypes, string[]> = {
     pdf: ['.pdf'],

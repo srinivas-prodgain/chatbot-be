@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import env from './env';
+import env from '../constants/env';
 
 
-const MONGO_URL = env.dbUrl
+const MONGO_URL = env.db_url
 
 
 if (!MONGO_URL) {

@@ -1,5 +1,5 @@
 import { Document, model, Schema } from "mongoose";
-import { updateCollectionArticleCount } from "../utils/update-collection-article-count";
+import { update_collection_article_count } from "../utils/update-collection-article-count";
 
 export const ARTICLE_REACTIONS = ['sad', 'middle', 'happy'] as const;
 export type ArticleReaction = typeof ARTICLE_REACTIONS[number];
@@ -92,7 +92,7 @@ const ArticleSchema = new Schema<TArticle>({
 // Middleware to update collection article count after article operations
 ArticleSchema.post('save', async function (doc) {
     try {
-        await updateCollectionArticleCount(doc.collection_id);
+        await update_collection_article_count(doc.collection_id);
     } catch (error) {
         console.error('Error updating collection count after article save:', error);
     }
@@ -115,7 +115,7 @@ ArticleSchema.post('deleteOne', async function () {
     try {
         const originalCollectionId = this.get('_originalCollectionId');
         if (originalCollectionId) {
-            await updateCollectionArticleCount(originalCollectionId);
+            await update_collection_article_count(originalCollectionId);
         }
     } catch (error) {
         console.error('Error updating collection count after article delete:', error);
@@ -125,7 +125,7 @@ ArticleSchema.post('deleteOne', async function () {
 ArticleSchema.post('findOneAndDelete', async function (doc) {
     try {
         if (doc) {
-            await updateCollectionArticleCount(doc.collection_id);
+            await update_collection_article_count(doc.collection_id);
         }
     } catch (error) {
         console.error('Error updating collection count after article delete:', error);
@@ -136,12 +136,12 @@ ArticleSchema.post('findOneAndDelete', async function (doc) {
 ArticleSchema.post('findOneAndUpdate', async function (doc) {
     try {
         if (doc) {
-            await updateCollectionArticleCount(doc.collection_id);
+            await update_collection_article_count(doc.collection_id);
 
             // If the original document had a different collection_id, update that one too
             const original = this.getOptions().original;
             if (original && original.collection_id && original.collection_id !== doc.collection_id) {
-                await updateCollectionArticleCount(original.collection_id);
+                await update_collection_article_count(original.collection_id);
             }
         }
     } catch (error) {

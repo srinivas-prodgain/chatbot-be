@@ -3,7 +3,7 @@ import { streamText, stepCountIs, ModelMessage } from 'ai';
 import { model } from '../../services/ai';
 import { message_handling_service } from '../../services/message-handling-service';
 import { search_user_documents } from '../../tools/search-user-documents';
-import { getSystemPrompt } from '../../lib/system-prompt';
+import { get_system_prompt } from '../../lib/system-prompt';
 import { throw_error } from '../../utils/throw-error';
 import { Request, Response } from 'express';
 
@@ -26,7 +26,7 @@ export const stream_chat = async (req: Request, res: Response) => {
 
     const system_message: ModelMessage = {
         role: 'system',
-        content: getSystemPrompt(user_id)
+        content: get_system_prompt(user_id)
     };
 
     const conversation_history = (await message_handling_service.get_conversation_history({ conversation_id }))

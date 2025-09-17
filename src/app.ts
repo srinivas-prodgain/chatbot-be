@@ -11,7 +11,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { error_handler } from './middleware/error-handler';
 
-import env from './config/env';
+import env from './constants/env';
 
 import { user_router } from './routes/user';
 import { throw_error } from './utils/throw-error';
@@ -42,7 +42,7 @@ app.use(success_handler)
 
 app.get('/', async (req: Request, res: Response) => {
     const health_data = {
-        environment: env.nodeEnv,
+        environment: env.node_env,
         uptime: Math.floor(process.uptime()),
         db_status: 'connected',
         timestamp: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`

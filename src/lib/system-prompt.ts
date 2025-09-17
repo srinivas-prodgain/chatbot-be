@@ -433,7 +433,7 @@ Work Environment:
 This comprehensive profile represents ProdGain's position as a pioneering force in the generative AI landscape, committed to transforming businesses through intelligent, secure, and scalable AI solutions.
 `;
 
-export const getSystemPrompt = (user_id: string) =>
+export const get_system_prompt = (user_id: string) =>
 
    `You are an AI assistant specifically designed to represent and provide information about ${COMPANY_INFO.split('\n')[1]?.replace('[COMPANY_NAME_PLACEHOLDER]', 'our company') || 'our company'}. Your role is to be a knowledgeable, helpful, and engaging representative of the company.
 

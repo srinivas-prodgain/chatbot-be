@@ -272,7 +272,7 @@ export class DocumentEmbeddingsMongoDBService {
             } else {
                 // Try to break at sentence boundaries first
                 const search_start = Math.max(start_index, end_index - Math.floor(max_chunk_size * 0.3)); // Search in last 30% of chunk
-                const last_sentence_end = this.findLastSentenceEnd({ text: clean_text, start: search_start, end: end_index });
+                const last_sentence_end = this.find_last_sentence_end({ text: clean_text, start: search_start, end: end_index });
 
                 if (last_sentence_end > start_index) {
                     end_index = last_sentence_end + 1;
@@ -314,7 +314,7 @@ export class DocumentEmbeddingsMongoDBService {
     }
 
     // Helper method to find sentence endings more accurately
-    private findLastSentenceEnd({ text, start, end }: TFindLastSentenceEndArgs): number {
+    private find_last_sentence_end({ text, start, end }: TFindLastSentenceEndArgs): number {
         const sentence_endings = ['.', '!', '?'];
         let last_pos = -1;
 

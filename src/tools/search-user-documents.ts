@@ -13,13 +13,13 @@ export const search_user_documents = tool({
     execute: async ({ query, user_id }) => {
         try {
             // Use the actual document search service
-            const searchResults = await document_embeddings_mongodb_service.search_similar_documents({
+            const search_results = await document_embeddings_mongodb_service.search_similar_documents({
                 query,
                 user_id,
                 max_results: 5
             });
 
-            if (!searchResults || searchResults.length === 0 || !searchResults[0] || searchResults[0].length === 0) {
+            if (!search_results || search_results.length === 0 || !search_results[0] || search_results[0].length === 0) {
                 return {
                     success: true,
                     message: `No relevant documents found for query: "${query}". Make sure you have uploaded documents that contain information related to your question.`,
@@ -27,7 +27,7 @@ export const search_user_documents = tool({
                 };
             }
 
-            const documents = searchResults[0]; // Extract the content array
+            const documents = search_results[0]; // Extract the content array
 
             return {
                 success: true,

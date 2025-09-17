@@ -1,6 +1,6 @@
 import app from './src/app';
 import dotenv from 'dotenv';
-import env from './src/config/env';
+import env from './src/constants/env';
 import { connect_to_db } from './src/config/db';
 
 
@@ -11,7 +11,7 @@ const server = app.listen(env.port, 'localhost', async () => {
     await connect_to_db();
     console.log('🚀 Chatbot Backend Server Started');
     console.log(`📍 Local: http://localhost:${env.port}`);
-    console.log(`🌍 Environment: ${env.nodeEnv}`);
+    console.log(`🌍 Environment: ${env.node_env}`);
     console.log('─'.repeat(50));
 });
 

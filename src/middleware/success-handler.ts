@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 
-import env from '../config/env';
+import env from '../constants/env';
 
 import { extract_user_agent_info } from '../utils/functions'
 

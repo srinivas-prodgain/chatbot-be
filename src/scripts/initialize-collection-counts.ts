@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { connect_to_db } from '../config/db';
-import { initializeAllCollectionCounts } from '../utils/update-collection-article-count';
+import { initialize_all_collection_counts } from '../utils/update-collection-article-count';
 
 async function runInitialization() {
     try {
@@ -10,7 +10,7 @@ async function runInitialization() {
         await connect_to_db();
 
         // Initialize all collection counts
-        await initializeAllCollectionCounts();
+        await initialize_all_collection_counts();
 
         console.log('✅ Collection article count initialization completed successfully!');
 

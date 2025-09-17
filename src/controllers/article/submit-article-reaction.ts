@@ -18,17 +18,17 @@ export const submit_article_reaction = async (req: Request, res: Response) => {
     }
 
     // Check if user already has a reaction
-    const existingReactionIndex = article.reactions.findIndex(
+    const existing_reaction_index = article.reactions.findIndex(
         r => r.user_id.toString() === user_id
     );
 
     let updatedArticle;
 
-    if (existingReactionIndex !== -1) {
+    if (existing_reaction_index !== -1) {
         // Update existing reaction
         updatedArticle = await Article.findByIdAndUpdate(
             _id,
-            { $set: { [`reactions.${existingReactionIndex}.reaction`]: reaction } },
+            { $set: { [`reactions.${existing_reaction_index}.reaction`]: reaction } },
             { new: true, runValidators: true }
         );
     } else {

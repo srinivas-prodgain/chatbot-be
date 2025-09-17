@@ -28,14 +28,14 @@ export const get_articles_by_search = async (req: Request, res: Response) => {
     const { search } = get_articles_by_search_query_schema.parse(req.query);
 
     // Create a case-insensitive regex pattern for searching
-    const searchRegex = new RegExp(search, 'i');
+    const search_regex = new RegExp(search, 'i');
 
     // Search for articles where the search term appears in title or content
     const articles = await mg.Article.find<TArticleSearchResult>({
         isPublished: true,
         $or: [
-            { title: { $regex: searchRegex } },
-            { content: { $regex: searchRegex } }
+            { title: { $regex: search_regex } },
+            { content: { $regex: search_regex } }
         ]
     })
         .select('_id title content')
@@ -48,10 +48,10 @@ export const get_articles_by_search = async (req: Request, res: Response) => {
 
     const formatted_articles: TFormattedSearchArticle[] = articles.map(article => {
         // Check if the search term is in the title
-        const titleMatch = article.title.match(new RegExp(search, 'i'));
+        const title_match = article.title.match(new RegExp(search, 'i'));
         let matched_snippet = '';
 
-        if (titleMatch) {
+        if (title_match) {
             // If found in title, use the title as snippet
             matched_snippet = article.title;
         } else {

@@ -18,17 +18,17 @@ export const submit_news_reaction = async (req: Request, res: Response) => {
     }
 
     // Check if user already has a reaction
-    const existingReactionIndex = news.reactions.findIndex(
+    const existing_reaction_index = news.reactions.findIndex(
         r => r.user_id.toString() === user_id
     );
 
     let updatedNews;
 
-    if (existingReactionIndex !== -1) {
+    if (existing_reaction_index !== -1) {
         // Update existing reaction
         updatedNews = await mg.News.findByIdAndUpdate(
             _id,
-            { $set: { [`reactions.${existingReactionIndex}.reaction`]: reaction } },
+            { $set: { [`reactions.${existing_reaction_index}.reaction`]: reaction } },
             { new: true, runValidators: true }
         );
     } else {
