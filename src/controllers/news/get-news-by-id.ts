@@ -3,7 +3,7 @@ import { Schema } from 'mongoose';
 import { z } from 'zod';
 
 import { mg } from '@/config/mg';
-import { NewsReactionItem } from '@/models/news';
+import { TNewsReactionItem } from '@/types/reactions';
 import { throw_error } from '@/utils/throw-error';
 
 type TPopulatedAuthor = {
@@ -29,7 +29,7 @@ type TFormattedNews = {
     is_published: boolean;
     is_featured: boolean;
     read_time: number;
-    reaction?: NewsReactionItem;
+    reaction?: TNewsReactionItem;
 }
 
 type TNewsWithPopulatedAuthors = {
@@ -46,7 +46,7 @@ type TNewsWithPopulatedAuthors = {
     is_published: boolean;
     is_featured: boolean;
     read_time: number;
-    reactions: NewsReactionItem[];
+    reactions: TNewsReactionItem[];
 }
 
 

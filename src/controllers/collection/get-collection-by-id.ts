@@ -76,7 +76,7 @@ type TResponseData = {
 
 export const get_collection_by_id = async (req: Request, res: Response) => {
 
-    const { _id } = get_collection_by_id_params_schema.parse(req.params);
+    const { _id } = z_get_collection_by_id_params_schema.parse(req.params);
 
     const collection = await mg.Collection.findById<TCollectionResponse>(_id)
 
@@ -84,12 +84,12 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
         throw_error('Collection not found', 404);
     }
 
-    if (!collection!.is_published) {
+    if (!collection.is_published) {
         throw_error('Collection not available', 404);
     }
 
     const articles_with_authors = mg.Article.find<TArticleWithAuthors>({
-        collection_id: collection!._id,
+        collection_id: collection._id,
         is_published: true
     })
         .select('title _id author co_authors')
@@ -102,7 +102,7 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
     }
 
     const child_collections = mg.Collection.find<TCollectionResponse>({
-        parent_collection: collection!._id,
+        parent_collection: collection._id,
         is_published: true
     })
         .select('title description slug icon total_articles _id')
@@ -156,12 +156,12 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
     }));
 
     const formatted_collection: TFormattedCollection = {
-        id: collection!._id,
+        id: collection._id,
         title: collection!.title,
         description: collection!.description,
-        slug: collection!.slug,
-        icon: collection!.icon,
-        level: collection!.level,
+        slug: collection.slug,
+        icon: collection.icon,
+        level: collection.level,
         parent_collection: collection!.parent_collection,
         total_articles: collection!.total_articles
     };
@@ -180,6 +180,6 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
 
 }
 
-const get_collection_by_id_params_schema = z.strictObject({
+const z_get_collection_by_id_params_schema = z.object({
     _id: z.string().min(1, "Collection ID is required")
 });

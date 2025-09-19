@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { mg } from '@/config/mg';
-import { NEWS_REACTIONS } from '@/models/news';
+import { NEWS_REACTIONS } from '@/constants/reactions';
 import { throw_error } from '@/utils/throw-error';
 
 

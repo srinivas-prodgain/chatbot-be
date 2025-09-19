@@ -4,10 +4,11 @@ import { z } from 'zod';
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
 import { TPost } from '@/models/post';
+import { z_pagination } from '@/utils/schema';
 
 export const get_posts = async (req: Request, res: Response) => {
 
-    const { page, limit } = z_get_posts_req_query.parse(req.query);
+    const { page, limit } = z_pagination().parse(req.query);
 
     const posts = mg.Post.find<TPost>()
         .skip((page - 1) * limit)
@@ -36,8 +37,3 @@ export const get_posts = async (req: Request, res: Response) => {
     });
 
 }
-
-const z_get_posts_req_query = z.strictObject({
-    page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
-    limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100))
-});

@@ -9,7 +9,7 @@ type TEnv = {
     host: string
     node_env: string
     frontend_url: string
-    openai_api_key: string
+    openai_api_key: string 
     is_prod: boolean
     is_dev: boolean
 }

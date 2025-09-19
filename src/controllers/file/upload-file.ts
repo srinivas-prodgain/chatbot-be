@@ -36,12 +36,6 @@ export const handle_upload = async (req: Request, res: Response) => {
         chunk_count: 0
     });
 
-
-
-    res.status(200).json({
-        message: 'File uploaded successfully. Processing will begin shortly.'
-    })
-
     process_file_in_background({
         file_path: req.file.path,
         file_id: document_file._id.toString(),
@@ -49,9 +43,13 @@ export const handle_upload = async (req: Request, res: Response) => {
         file_size: req.file.size,
         mime_type: req.file.mimetype,
         user_id
-    }).catch(error => {
-        throw_error(`File upload failed: ${error}`, 500);
     });
+
+
+    res.status(200).json({
+        message: 'File uploaded successfully. Processing will begin shortly.'
+    })
+
 
 };
 

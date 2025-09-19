@@ -1,15 +1,14 @@
 import { Document, model, Schema } from "mongoose";
 
-
-export const statuses = ['active', 'inactive', 'archived'] as const;
-type TStatus = (typeof statuses)[number];
+import { CONVERSATION_STATUSES } from "@/constants/conversation";
+import { TConversationStatus } from "@/types/conversation";
 
 
 
 export type TConversation = Document & {
     title: string;
     user_id: Schema.Types.ObjectId;
-    status: TStatus;
+    status: TConversationStatus;
 }
 
 
@@ -26,7 +25,7 @@ const conversationSchema = new Schema<TConversation>({
     },
     status: {
         type: String,
-        enum: statuses,
+        enum: CONVERSATION_STATUSES,
         default: 'active'
     }
 }, {

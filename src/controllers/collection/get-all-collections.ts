@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import { z } from 'zod';
 
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
 import { TCollection } from '@/models/collection';
+import { z_pagination } from '@/utils/schema';
 
 export const get_all_collections = async (req: Request, res: Response) => {
 
-    const { page, limit } = get_all_collections_query_schema.parse(req.query);
+    const { page, limit } = z_pagination().parse(req.query);
 
     const collections = mg.Collection.find<TCollection>({
         level: 0,
@@ -52,8 +52,3 @@ export const get_all_collections = async (req: Request, res: Response) => {
     });
 
 }
-
-const get_all_collections_query_schema = z.strictObject({
-    page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
-    limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100))
-});

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { mg } from '@/config/mg';
-import { themes, languages } from '@/models/user';
+import { USER_THEMES, USER_LANGUAGES } from '@/constants/user';
 import { throw_error } from '@/utils/throw-error';
 
 
@@ -29,8 +29,8 @@ const z_create_user_req_query = z.object({
 
 const z_create_user_req_body = z.strictObject({
     preferences: z.object({
-        theme: z.enum(themes),
-        language: z.enum(languages)
+        theme: z.enum(USER_THEMES),
+        language: z.enum(USER_LANGUAGES)
     }).optional()
 })
 

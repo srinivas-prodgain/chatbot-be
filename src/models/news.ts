@@ -1,15 +1,9 @@
 import { Document, model, Schema } from "mongoose";
 
-export const NEWS_REACTIONS = ['sleeping', 'heart', 'thumbsdown', 'tada'] as const;
-export type NewsReaction = typeof NEWS_REACTIONS[number];
-
-export type NewsReactionItem = {
-    reaction: NewsReaction;
-    user_id: Schema.Types.ObjectId;
-};
-
-export const categories = ['ai-news', 'company-news', 'product-update', 'industry', 'technology', 'announcement'] as const;
-type TCategory = (typeof categories)[number];
+import { NEWS_REACTIONS } from "@/constants/reactions";
+import { NEWS_CATEGORIES } from "@/constants/categories";
+import { TNewsReactionItem } from "@/types/reactions";
+import { TNewsCategory } from "@/types/categories";
 
 
 export type TNews = Document & {
@@ -19,13 +13,13 @@ export type TNews = Document & {
     image_url: string;
     thumbnail_url: string;
     author: Schema.Types.ObjectId;
-    category: TCategory;
+    category: TNewsCategory;
     tags: string[];
     published_at: Date;
     is_published: boolean;
     is_featured: boolean;
     read_time: number;
-    reactions: NewsReactionItem[];
+    reactions: TNewsReactionItem[];
 }
 
 const newsSchema = new Schema<TNews>({
@@ -59,7 +53,7 @@ const newsSchema = new Schema<TNews>({
     },
     category: {
         type: String,
-        enum: categories,
+        enum: NEWS_CATEGORIES,
         required: true
     },
     tags: [{

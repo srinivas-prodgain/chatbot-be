@@ -1,8 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 
-
-export const categories = ['product', 'announcement', 'event', 'update', 'feature', 'service'] as const;
-type TCategory = (typeof categories)[number];
+import { POST_CATEGORIES } from "@/constants/categories";
+import { TPostCategory } from "@/types/categories";
 
 export type TPost = Document & {
     title: string;
@@ -10,7 +9,7 @@ export type TPost = Document & {
     image_url: string;
     link_url: string;
     link_text: string;
-    category: TCategory;
+    category: TPostCategory;
     is_active: boolean;
     tags: string[];
 }
@@ -39,7 +38,7 @@ const postSchema = new Schema<TPost>({
     },
     category: {
         type: String,
-        enum: categories,
+        enum: POST_CATEGORIES,
         required: true
     },
     is_active: {

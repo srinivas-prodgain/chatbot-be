@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { Article, ARTICLE_REACTIONS } from '@/models/article';
+import { Article } from '@/models/article';
+import { ARTICLE_REACTIONS } from '@/constants/reactions';
 import { throw_error } from '@/utils/throw-error';
 
 

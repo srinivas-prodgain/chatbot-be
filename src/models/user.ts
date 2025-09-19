@@ -1,17 +1,13 @@
 import { Document, model, Schema } from "mongoose";
 
-
-export const themes = ['light', 'dark'] as const;
-export const languages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'zh', 'ja', 'ko'] as const;
-
-type TLanguage = (typeof languages)[number];
-type TTheme = (typeof themes)[number];
+import { USER_THEMES, USER_LANGUAGES } from "@/constants/user";
+import { TUserTheme, TUserLanguage } from "@/types/user";
 
 
 type TUser = Document & {
     preferences: {
-        theme: TTheme;
-        language: TLanguage;
+        theme: TUserTheme;
+        language: TUserLanguage;
     };
 }
 
@@ -20,13 +16,13 @@ const userSchema = new Schema<TUser>({
     preferences: {
         theme: {
             type: String,
-            enum: themes,
-            default: themes[0]
+            enum: USER_THEMES,
+            default: USER_THEMES[0]
         },
         language: {
             type: String,
-            enum: languages,
-            default: languages[0]
+            enum: USER_LANGUAGES,
+            default: USER_LANGUAGES[0]
         }
     }
 }, {

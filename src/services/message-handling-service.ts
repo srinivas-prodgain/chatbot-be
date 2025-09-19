@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 
 import { mg } from '@/config/mg';
 import { TConversation } from '@/models/conversation';
-import { TSender } from '@/models/messsage';
+import { TMessageSender } from '@/types/message';
 
 import { generate_conversation_title } from './conversation-title-service';
 
@@ -17,7 +17,7 @@ const DEFAULT_CONVERSATION_TITLE = 'New Chat';
 type ConversationIdentifier = Types.ObjectId | string;
 type ConversationHistoryMessage = {
     message: string;
-    sender: TSender;
+    sender: TMessageSender;
     createdAt: Date;
 };
 

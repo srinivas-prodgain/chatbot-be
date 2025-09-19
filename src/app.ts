@@ -1,7 +1,6 @@
 import express, {
     Request,
     Response,
-    NextFunction,
     json,
     urlencoded
 } from 'express';

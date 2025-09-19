@@ -3,7 +3,6 @@ import { Schema } from 'mongoose';
 import { z } from 'zod';
 
 import { mg } from '@/config/mg';
-import { createSnippet } from '@/utils/create-snippet';
 import { throw_error } from '@/utils/throw-error';
 
 type TArticleSearchResult = {
@@ -26,7 +25,7 @@ type TResponseData = {
 }
 
 export const get_articles_by_search = async (req: Request, res: Response) => {
-    const { search } = get_articles_by_search_query_schema.parse(req.query);
+    const { search } = z_articles_by_search_query_schema.parse(req.query);
 
     // Create a case-insensitive regex pattern for searching
     const search_regex = new RegExp(search, 'i');
@@ -57,7 +56,7 @@ export const get_articles_by_search = async (req: Request, res: Response) => {
             matched_snippet = article.title;
         } else {
             // If found in content, create snippet from content
-            matched_snippet = createSnippet(article.content, search);
+            matched_snippet = create_snippet(article.content, search);
         }
 
         return {
@@ -79,6 +78,35 @@ export const get_articles_by_search = async (req: Request, res: Response) => {
     });
 }
 
-const get_articles_by_search_query_schema = z.strictObject({
+const z_articles_by_search_query_schema = z.object({
     search: z.string().min(1, "Search query is required")
 });
+
+
+
+const create_snippet = (text: string, search_term: string): string => {
+    const search_regex_global = new RegExp(search_term, 'gi');
+
+    // Find the first match
+    const match = text.match(search_regex_global);
+    if (!match) return text.substring(0, 50) + '...';
+
+    const match_index = text.search(search_regex_global);
+    const before_text = text.substring(0, match_index);
+    const before_words = before_text.split(/\s+/).filter(word => word.length > 0);
+    const after_text = text.substring(match_index + match[0].length);
+    const after_words = after_text.split(/\s+/).filter(word => word.length > 0);
+
+    // Get 5 words before and after
+    const context_before = before_words.slice(-5).join(' ');
+    const context_after = after_words.slice(0, 5).join(' ');
+
+    // Construct the snippet
+    const snippet = [
+        context_before,
+        match[0],
+        context_after
+    ].filter(part => part.length > 0).join(' ');
+
+    return snippet.trim();
+};

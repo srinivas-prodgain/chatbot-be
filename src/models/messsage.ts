@@ -1,14 +1,13 @@
 import { Document, model, Schema } from "mongoose";
 
-
-export const senders = ['user', 'assistant'] as const;
-export type TSender = (typeof senders)[number];
+import { MESSAGE_SENDERS } from "@/constants/message";
+import { TMessageSender } from "@/types/message";
 
 
 export type TMessage = Document & {
     user_id: Schema.Types.ObjectId;
     message: string;
-    sender: TSender;
+    sender: TMessageSender;
     conversation_id: Schema.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
@@ -26,7 +25,7 @@ const messageSchema = new Schema<TMessage>({
     },
     sender: {
         type: String,
-        enum: senders,
+        enum: MESSAGE_SENDERS,
         required: true
     },
     conversation_id: {

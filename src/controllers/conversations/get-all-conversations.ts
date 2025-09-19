@@ -4,10 +4,11 @@ import { z } from 'zod';
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
 import { TConversation } from '@/models/conversation';
+import { z_pagination, z_object_id } from '@/utils/schema';
 
 export const get_all_conversations = async (req: Request, res: Response) => {
 
-    const { page, limit, user_id } = get_all_conversations_query_schema.parse(req.query);
+    const { page, limit, user_id } = z_get_all_conversations_query_schema.parse(req.query);
 
     const conversations = mg.Conversation.find<TConversation>({
         user_id: user_id,
@@ -44,8 +45,6 @@ export const get_all_conversations = async (req: Request, res: Response) => {
 
 }
 
-const get_all_conversations_query_schema = z.strictObject({
-    page: z.string().default('1').transform(Number).pipe(z.number().min(1)),
-    limit: z.string().default('10').transform(Number).pipe(z.number().min(1).max(100)),
-    user_id: z.string().min(1, 'user_id is required')
-});
+const z_get_all_conversations_query_schema = z.object({
+    user_id: z_object_id
+}).merge(z_pagination());

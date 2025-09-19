@@ -3,7 +3,7 @@ import { Schema } from 'mongoose';
 import { z } from 'zod';
 
 import { mg } from '@/config/mg';
-import { ArticleReactionItem } from '@/models/article';
+import { TArticleReactionItem } from '@/types/reactions';
 import { throw_error } from '@/utils/throw-error';
 
 type TPopulatedAuthor = {
@@ -32,7 +32,7 @@ type TArticleWithPopulatedAuthors = {
     tags: string[];
     read_time: number;
     is_published: boolean;
-    reactions?: ArticleReactionItem[];
+    reactions?: TArticleReactionItem[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -65,7 +65,7 @@ type TFormattedArticle = {
     tags: string[];
     read_time: number;
     related_articles: TFormattedRelatedArticle[];
-    reaction?: ArticleReactionItem;
+    reaction?: TArticleReactionItem;
     created_at: Date;
     updated_at: Date;
 }
@@ -77,10 +77,10 @@ type TResponseData = {
 }
 
 export const get_article_by_id = async (req: Request, res: Response) => {
-    const { _id } = get_article_by_id_params_schema.parse(req.params);
-    const { user_id } = get_article_by_id_query_schema.parse(req.query);
+    const { _id } = z_get_article_by_id_params_schema.parse(req.params);
+    const { user_id } = z_get_article_by_id_query_schema.parse(req.query);
 
-    const article = await mg.Article.findById<TArticleWithPopulatedAuthors>(_id)
+    const article = await mg.Article.findOne<TArticleWithPopulatedAuthors>({_id})
         .populate('author', 'name email profile_image bio role social_links')
         .populate('co_authors', 'name email profile_image bio role social_links')
         .populate('related_articles', 'title _id');
@@ -89,7 +89,7 @@ export const get_article_by_id = async (req: Request, res: Response) => {
         throw_error('Article not found', 404);
     }
 
-    if (!article!.is_published) {
+    if (!article.is_published) {
         throw_error('Article not available', 404);
     }
 
@@ -151,10 +151,10 @@ export const get_article_by_id = async (req: Request, res: Response) => {
     });
 }
 
-const get_article_by_id_params_schema = z.strictObject({
+const z_get_article_by_id_params_schema = z.object({
     _id: z.string().min(1, "Article ID is required")
 });
 
-const get_article_by_id_query_schema = z.strictObject({
+const z_get_article_by_id_query_schema = z.object({
     user_id: z.string().min(1, "User ID is required")
 });
