@@ -1,38 +1,49 @@
 import { Request, Response } from 'express';
+import { Types } from 'mongoose';
 import { z } from 'zod';
 
 import { mg } from '@/config/mg';
 import { throw_error } from '@/utils/throw-error';
 import { TPost } from '@/models/post';
-import { z_pagination } from '@/utils/schema';
+import { z_infinite_scroll } from '@/utils/schema';
+
+type TQuery = {
+    _id?: { $lt: Types.ObjectId };
+};
 
 export const get_posts = async (req: Request, res: Response) => {
 
-    const { page, limit } = z_pagination().parse(req.query);
+    const { limit, cursor } = z_infinite_scroll().parse(req.query);
 
-    const posts = mg.Post.find<TPost>()
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .sort({ createdAt: -1 });
+    // Build query with cursor-based pagination
+    const query: TQuery = {};
 
-    const get_total_posts = mg.Post.countDocuments();
+    // Add cursor condition for pagination
+    if (cursor) {
+        query._id = { $lt: cursor }; // Using $lt for descending order (createdAt: -1)
+    }
 
-    const [posts_data, total_posts] = await Promise.all([posts, get_total_posts]);
+    const posts = await mg.Post.find<TPost>(query)
+        .limit(limit + 1) // Get one extra to check if there are more
+        .sort({ createdAt: -1, _id: -1 });
 
-    if (!posts_data) {
+    if (!posts) {
         throw_error('Posts not found', 404);
     }
 
-    const total_pages = Math.ceil(total_posts / limit);
+    // Check if there are more results
+    const has_more = posts.length > limit;
+    const posts_to_return = has_more ? posts.slice(0, -1) : posts;
+    const next_cursor = has_more && posts_to_return.length > 0 ?
+        posts_to_return[posts_to_return.length - 1]?._id?.toString() || null : null;
 
     res.status(200).json({
         message: "Posts retrieved successfully",
-        data: posts_data,
-        pagination: {
-            page,
-            limit,
-            total_pages,
-            total_posts
+        data: posts_to_return,
+        infinite_scroll: {
+            has_more,
+            next_cursor,
+            limit
         }
     });
 

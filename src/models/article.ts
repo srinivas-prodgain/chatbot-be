@@ -2,7 +2,7 @@ import { Document, model, Schema } from "mongoose";
 
 import { update_collection_article_count } from "@/utils/update-collection-article-count";
 import { ARTICLE_REACTIONS } from "@/constants/reactions";
-import { ArticleReaction, ArticleReactionItem } from "@/types/reactions";
+import { TArticleReactionItem } from "@/types/reactions";
 
 type TArticle = Document & {
     title: string;
@@ -16,7 +16,7 @@ type TArticle = Document & {
     tags: string[];
     read_time: number;
     is_published: boolean;
-    reactions: ArticleReactionItem[];
+    reactions: TArticleReactionItem[];
 }
 
 
