@@ -57,6 +57,7 @@ CollectionSchema.index({ level: 1 });
 CollectionSchema.index({ is_published: 1 });
 CollectionSchema.index({ parent_collection: 1, level: 1 }); // Compound index for hierarchical queries
 CollectionSchema.index({ is_published: 1, level: 1 }); // Compound index for published collections by level
-CollectionSchema.index({ total_articles: -1 }); // For sorting by article count
+CollectionSchema.index({ total_articles: -1 });
+CollectionSchema.index({ is_published: 1, level: 1, createdAt: -1, _id: -1 }); // Compound index for cursor-based pagination
 
 export const Collection = model<TCollection>('Collection', CollectionSchema);

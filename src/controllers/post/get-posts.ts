@@ -9,6 +9,7 @@ import { z_infinite_scroll } from '@/utils/schema';
 
 type TQuery = {
     _id?: { $lt: Types.ObjectId };
+    is_active: boolean;
 };
 
 export const get_posts = async (req: Request, res: Response) => {
@@ -16,11 +17,11 @@ export const get_posts = async (req: Request, res: Response) => {
     const { limit, cursor } = z_infinite_scroll().parse(req.query);
 
     // Build query with cursor-based pagination
-    const query: TQuery = {};
+    const query: TQuery = { is_active: true };
 
     // Add cursor condition for pagination
     if (cursor) {
-        query._id = { $lt: cursor }; // Using $lt for descending order (createdAt: -1)
+        query._id = { $lt: cursor }; // Using $lt for descending order to get older posts
     }
 
     const posts = await mg.Post.find<TPost>(query)

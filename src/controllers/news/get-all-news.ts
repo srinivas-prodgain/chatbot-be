@@ -20,13 +20,13 @@ export const get_all_news = async (req: Request, res: Response) => {
 
     // Add cursor condition for pagination
     if (cursor) {
-        query._id = { $lt: cursor }; // Using $lt for descending order (published_at: -1)
+        query._id = { $lt: cursor }; // Using $lt for descending order to get older news
     }
 
     const news = await mg.News.find<TNews>(query)
-        .select('title slug content image_url tags _id')
+        .select('title slug content image_url tags _id published_at')
         .limit(limit + 1) // Get one extra to check if there are more
-        .sort({ published_at: -1, _id: -1 });
+        .sort({ _id: -1 }); // Use _id sorting since all published_at dates are the same
 
     if (!news) {
         throw_error('News not found', 404);

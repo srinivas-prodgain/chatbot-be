@@ -9,7 +9,7 @@ import { z_infinite_scroll } from '@/utils/schema';
 type TQuery = {
     level: number;
     is_published: boolean;
-    _id?: { $gt: Types.ObjectId };
+    _id?: { $lt: Types.ObjectId };
 }
 
 export const get_all_collections = async (req: Request, res: Response) => {
@@ -24,13 +24,13 @@ export const get_all_collections = async (req: Request, res: Response) => {
 
     // Add cursor condition for pagination
     if (cursor) {
-        query._id = { $gt: cursor }; // Using $gt for ascending order (title: 1)
+        query._id = { $lt: cursor }; // Using $lt for descending order (createdAt: -1)
     }
 
     const collections = await mg.Collection.find<TCollection>(query)
         .select('title description slug icon total_articles')
         .limit(limit + 1) // Get one extra to check if there are more
-        .sort({ title: 1, _id: 1 });
+        .sort({ createdAt: -1, _id: -1 });
 
     if (!collections) {
         throw_error('Collections not found', 404);

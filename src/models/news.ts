@@ -103,5 +103,6 @@ newsSchema.index({ published_at: -1 }); // Descending for latest first
 newsSchema.index({ is_published: 1, published_at: -1 }); // Compound index for published articles sorted by date
 newsSchema.index({ is_featured: 1, is_published: 1 }); // Compound index for featured published articles
 newsSchema.index({ category: 1, is_published: 1 }); // Compound index for category filtering
+newsSchema.index({ is_published: 1, published_at: -1, _id: -1 }); // Compound index for cursor-based pagination
 
 export const News = model<TNews>('News', newsSchema);
