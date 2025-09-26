@@ -56,5 +56,6 @@ postSchema.index({ is_active: 1 });
 postSchema.index({ tags: 1 });
 postSchema.index({ is_active: 1, category: 1 }); // Compound index for active posts by category
 postSchema.index({ createdAt: -1 }); // For sorting by creation date
+postSchema.index({ is_active: 1, createdAt: -1, _id: -1 }); // Compound index for cursor-based pagination
 
 export const Post = model<TPost>('Post', postSchema);

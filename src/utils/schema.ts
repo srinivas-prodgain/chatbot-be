@@ -25,3 +25,26 @@ export const z_pagination = (page = '1', limit = '20') =>
                 message: 'Limit must be greater than or equal to 1'
             })
     })
+
+export const z_infinite_scroll = (limit = '20') =>
+    z.object({
+        limit: z
+            .string()
+            .optional()
+            .default(limit)
+            .transform(Number)
+            .refine((val) => val >= 1 && val <= 100, {
+                message: 'Limit must be between 1 and 100'
+            }),
+        cursor: z
+            .string()
+            .optional()
+            .nullable()
+            .refine((val) => {
+                if (!val) return true; // Allow null/undefined
+                return /^[0-9a-fA-F]{24}$/.test(val); // Valid ObjectId format
+            }, {
+                message: 'Invalid cursor format'
+            })
+            .transform((val) => val ? new Types.ObjectId(val) : null)
+    })

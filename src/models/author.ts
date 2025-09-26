@@ -23,7 +23,6 @@ const authorSchema = new Schema<TAuthor>({
     email: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true
     },
     profile_image: {
