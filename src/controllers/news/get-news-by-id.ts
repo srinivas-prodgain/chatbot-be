@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { TNewsReactionItem } from '@/types/reactions';
 import { throw_error } from '@/utils/throw-error';
 

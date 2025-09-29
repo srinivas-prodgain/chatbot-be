@@ -7,7 +7,7 @@ import { Article } from "@/models/article";
 import { DocumentFile } from "@/models/file";
 import { DocumentEmbedding } from "@/models/file-embeddings";
 import { Conversation } from "@/models/conversation";
-import { Message } from "@/models/messsage";
+import { Message } from "@/models/message";
 
 export const mg = {
     User,

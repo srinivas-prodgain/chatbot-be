@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { throw_error } from '@/utils/throw-error';
 
 export const get_conversation_by_id = async (req: Request, res: Response) => {

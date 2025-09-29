@@ -1,4 +1,4 @@
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 
 /**
  * Collection Article Count Utilities

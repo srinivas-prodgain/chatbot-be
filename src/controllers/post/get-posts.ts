@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { throw_error } from '@/utils/throw-error';
 import { TPost } from '@/models/post';
 import { z_infinite_scroll } from '@/utils/schema';

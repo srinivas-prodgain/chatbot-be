@@ -5,7 +5,7 @@ import { TConversationStatus } from "@/types/conversation";
 
 
 
-export type TConversation = Document & {
+type TConversation = Document & {
     title: string;
     user_id: Schema.Types.ObjectId;
     status: TConversationStatus;
@@ -39,3 +39,4 @@ conversationSchema.index({ createdAt: -1 }); // For sorting by creation date
 conversationSchema.index({ updatedAt: -1 }); // For sorting by last activity
 
 export const Conversation = model<TConversation>('Conversation', conversationSchema);
+export type { TConversation };

@@ -1,7 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
 import { TProcessingStatus, processing_status } from '@/types/shared';
 
-export type TDocumentFile = Document & {
+type TDocumentFile = Document & {
     _id: string;
     file_name: string;
     file_size: number;

@@ -1,6 +1,6 @@
 import { generateText } from 'ai';
 
-import { model } from './ai';
+import { model } from '@/services/ai';
 
 const TITLE_SYSTEM_PROMPT = `You create concise, engaging titles for AI chat conversations. Summarize the exchange in six words or fewer. Output plain text with no surrounding quotes or trailing punctuation.`;
 const MAX_TITLE_LENGTH = 100;

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { Article } from '@/models/article';
+import { mg } from '@/configs/mg';
 import { ARTICLE_REACTIONS } from '@/constants/reactions';
 import { throw_error } from '@/utils/throw-error';
 
@@ -12,7 +12,7 @@ export const submit_article_reaction = async (req: Request, res: Response) => {
     const { reaction } = z_submit_article_reaction_body.parse(req.body);
 
     // First, try to find if this user already has a reaction on this article
-    const article = await Article.findById(_id);
+    const article = await mg.Article.findById(_id);
 
     if (!article) {
         throw_error('Article not found', 404);
@@ -27,14 +27,14 @@ export const submit_article_reaction = async (req: Request, res: Response) => {
 
     if (existing_reaction_index !== -1) {
         // Update existing reaction
-        updatedArticle = await Article.findByIdAndUpdate(
+        updatedArticle = await mg.Article.findByIdAndUpdate(
             _id,
             { $set: { [`reactions.${existing_reaction_index}.reaction`]: reaction } },
             { new: true, runValidators: true }
         );
     } else {
         // Add new reaction
-        updatedArticle = await Article.findByIdAndUpdate(
+        updatedArticle = await mg.Article.findByIdAndUpdate(
             _id,
             { $push: { reactions: { reaction, user_id } } },
             { new: true, runValidators: true }

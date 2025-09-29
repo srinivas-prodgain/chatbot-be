@@ -1,6 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
 
-export type TDocumentEmbedding = Document & {
+type TDocumentEmbedding = Document & {
     _id: string;
     file_id: string;
     chunk_id: string;
