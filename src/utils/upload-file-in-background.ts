@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { document_embeddings_mongodb_service } from '@/classes/document-embeddings-mongodb-service';
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 
 export type TProcessFileInBackgroundArgs = {
     file_path: string;

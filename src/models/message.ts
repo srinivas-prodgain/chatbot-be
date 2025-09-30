@@ -4,7 +4,7 @@ import { MESSAGE_SENDERS } from "@/constants/message";
 import { TMessageSender } from "@/types/message";
 
 
-export type TMessage = Document & {
+type TMessage = Document & {
     user_id: Schema.Types.ObjectId;
     message: string;
     sender: TMessageSender;

@@ -8,8 +8,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import env from '@/constants/env';
-import { error_handler } from '@/middleware/error-handler';
-import { success_handler } from '@/middleware/success-handler';
+import { error_handler } from '@/middlewares/error-handler';
+import { success_handler } from '@/middlewares/success-handler';
 import { article_router } from '@/routes/article';
 import { chat_router } from '@/routes/chat';
 import { collection_router } from '@/routes/collection';

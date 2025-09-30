@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { throw_error } from '@/utils/throw-error';
 
 type TPopulatedAuthor = {
@@ -76,7 +76,7 @@ type TResponseData = {
 
 export const get_collection_by_id = async (req: Request, res: Response) => {
 
-    const { _id } = z_get_collection_by_id_params_schema.parse(req.params);
+    const { _id } = z_get_collection_by_id_params.parse(req.params);
 
     const collection = await mg.Collection.findById<TCollectionResponse>(_id)
 
@@ -180,6 +180,6 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
 
 }
 
-const z_get_collection_by_id_params_schema = z.object({
+const z_get_collection_by_id_params = z.object({
     _id: z.string().min(1, "Collection ID is required")
 });

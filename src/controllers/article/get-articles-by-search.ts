@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { throw_error } from '@/utils/throw-error';
 
 type TArticleSearchResult = {
@@ -25,7 +25,7 @@ type TResponseData = {
 }
 
 export const get_articles_by_search = async (req: Request, res: Response) => {
-    const { search } = z_articles_by_search_query_schema.parse(req.query);
+    const { search } = z_articles_by_search_query.parse(req.query);
 
     // Create a case-insensitive regex pattern for searching
     const search_regex = new RegExp(search, 'i');
@@ -78,7 +78,7 @@ export const get_articles_by_search = async (req: Request, res: Response) => {
     });
 }
 
-const z_articles_by_search_query_schema = z.object({
+const z_articles_by_search_query = z.object({
     search: z.string().min(1, "Search query is required")
 });
 

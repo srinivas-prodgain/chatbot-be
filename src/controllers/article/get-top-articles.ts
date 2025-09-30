@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { throw_error } from '@/utils/throw-error';
 
 type TArticle = {

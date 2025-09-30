@@ -3,7 +3,7 @@ import { Document, model, Schema } from "mongoose";
 import { POST_CATEGORIES } from "@/constants/categories";
 import { TPostCategory } from "@/types/categories";
 
-export type TPost = Document & {
+type TPost = Document & {
     title: string;
     description: string;
     image_url: string;
@@ -59,3 +59,4 @@ postSchema.index({ createdAt: -1 }); // For sorting by creation date
 postSchema.index({ is_active: 1, createdAt: -1, _id: -1 }); // Compound index for cursor-based pagination
 
 export const Post = model<TPost>('Post', postSchema);
+export type { TPost };

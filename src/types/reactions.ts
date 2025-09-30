@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 import { ARTICLE_REACTIONS, NEWS_REACTIONS } from "@/constants/reactions";
 
 // Article reaction types
-export type TArticleReaction = typeof ARTICLE_REACTIONS[number];
+type TArticleReaction = typeof ARTICLE_REACTIONS[number];
 
 export type TArticleReactionItem = {
     reaction: TArticleReaction;
@@ -10,7 +10,7 @@ export type TArticleReactionItem = {
 };
 
 // News reaction types
-export type TNewsReaction = typeof NEWS_REACTIONS[number];
+type TNewsReaction = typeof NEWS_REACTIONS[number];
 
 export type TNewsReactionItem = {
     reaction: TNewsReaction;

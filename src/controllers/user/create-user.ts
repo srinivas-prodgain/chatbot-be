@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { USER_THEMES, USER_LANGUAGES } from '@/constants/user';
 import { throw_error } from '@/utils/throw-error';
 

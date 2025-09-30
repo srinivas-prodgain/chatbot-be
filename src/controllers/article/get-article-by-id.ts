@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 import { z } from 'zod';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { TArticleReactionItem } from '@/types/reactions';
 import { throw_error } from '@/utils/throw-error';
 
@@ -77,10 +77,10 @@ type TResponseData = {
 }
 
 export const get_article_by_id = async (req: Request, res: Response) => {
-    const { _id } = z_get_article_by_id_params_schema.parse(req.params);
-    const { user_id } = z_get_article_by_id_query_schema.parse(req.query);
+    const { _id } = z_get_article_by_id_params.parse(req.params);
+    const { user_id } = z_get_article_by_id_query.parse(req.query);
 
-    const article = await mg.Article.findOne<TArticleWithPopulatedAuthors>({_id})
+    const article = await mg.Article.findOne<TArticleWithPopulatedAuthors>({ _id })
         .populate('author', 'name email profile_image bio role social_links')
         .populate('co_authors', 'name email profile_image bio role social_links')
         .populate('related_articles', 'title _id');
@@ -151,10 +151,10 @@ export const get_article_by_id = async (req: Request, res: Response) => {
     });
 }
 
-const z_get_article_by_id_params_schema = z.object({
+const z_get_article_by_id_params = z.object({
     _id: z.string().min(1, "Article ID is required")
 });
 
-const z_get_article_by_id_query_schema = z.object({
+const z_get_article_by_id_query = z.object({
     user_id: z.string().min(1, "User ID is required")
 });

@@ -1,10 +1,10 @@
 import { Types } from 'mongoose';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { TConversation } from '@/models/conversation';
 import { TMessageSender } from '@/types/message';
 
-import { generate_conversation_title } from './conversation-title-service';
+import { generate_conversation_title } from '@/services/conversation-title-service';
 
 export type TMessageHandlingParams = {
     conversation_id: string;

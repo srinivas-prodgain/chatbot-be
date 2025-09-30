@@ -1,11 +1,10 @@
 import fs from 'fs';
 import { Types } from 'mongoose';
-
 import pdfParse from 'pdf-parse';
 import mammoth from 'mammoth';
 import MarkdownIt from 'markdown-it';
 
-import { mg } from '@/config/mg';
+import { mg } from '@/configs/mg';
 import { get_embedding } from '@/services/ai';
 import {
     DEFAULT_CHUNK_SIZE,

@@ -1,7 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 
 
-export type TCollection = Document & {
+type TCollection = Document & {
     title: string;
     description: string;
     slug: string;
@@ -61,3 +61,4 @@ CollectionSchema.index({ total_articles: -1 });
 CollectionSchema.index({ is_published: 1, level: 1, createdAt: -1, _id: -1 }); // Compound index for cursor-based pagination
 
 export const Collection = model<TCollection>('Collection', CollectionSchema);
+export type { TCollection };

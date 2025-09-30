@@ -6,7 +6,7 @@ import { TNewsReactionItem } from "@/types/reactions";
 import { TNewsCategory } from "@/types/categories";
 
 
-export type TNews = Document & {
+type TNews = Document & {
     title: string;
     slug: string;
     content: string;
@@ -106,3 +106,4 @@ newsSchema.index({ category: 1, is_published: 1 }); // Compound index for catego
 newsSchema.index({ is_published: 1, published_at: -1, _id: -1 }); // Compound index for cursor-based pagination
 
 export const News = model<TNews>('News', newsSchema);
+export type { TNews };

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 import app from '@/app';
-import { connect_to_db } from '@/config/db';
+import { connect_to_db } from '@/configs/db';
 import env from '@/constants/env';
 
 
