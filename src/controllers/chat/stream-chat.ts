@@ -44,7 +44,7 @@ export const stream_chat = async (req: Request, res: Response) => {
         stopWhen: stepCountIs(5),
         onFinish: async (event) => {
             await message_handling_service.save_ai_message({
-                ai_response: event.text,
+                message: event.text,
                 conversation_id,
                 user_id
             });

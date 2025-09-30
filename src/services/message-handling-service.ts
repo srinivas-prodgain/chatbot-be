@@ -1,8 +1,7 @@
-import { Types } from 'mongoose';
-
 import { mg } from '@/configs/mg';
 import { TConversation } from '@/models/conversation';
 import { TMessageSender } from '@/types/message';
+
 
 import { generate_conversation_title } from '@/services/conversation-title-service';
 
@@ -12,9 +11,24 @@ export type TMessageHandlingParams = {
     user_id: string;
 };
 
+type TSaveUserMessageParams = {
+    message: string;
+    conversation_id: string;
+    user_id: string;
+};
+
+type TSaveAiMessageParams = {
+    message: string;
+    conversation_id: string;
+    user_id: string;
+};
+
+type TGetConversationHistoryParams = {
+    conversation_id: string;
+};
+
 const DEFAULT_CONVERSATION_TITLE = 'New Chat';
 
-type ConversationIdentifier = Types.ObjectId | string;
 type ConversationHistoryMessage = {
     message: string;
     sender: TMessageSender;
@@ -37,7 +51,7 @@ export const message_handling_service = {
         return conversation;
     },
 
-    async save_user_message({ message, conversation_id, user_id }: { message: string, conversation_id: ConversationIdentifier, user_id: string }) {
+    async save_user_message({ message, conversation_id, user_id }: TSaveUserMessageParams) {
         const user_message = new mg.Message({
             message,
             sender: 'user',
@@ -47,13 +61,13 @@ export const message_handling_service = {
         await user_message.save();
     },
 
-    async save_ai_message({ ai_response, conversation_id, user_id }: { ai_response: string, conversation_id: ConversationIdentifier, user_id: string }) {
-        if (!ai_response.trim()) {
+    async save_ai_message({ message, conversation_id, user_id }: TSaveAiMessageParams) {
+        if (!message.trim()) {
             return;
         }
 
         const ai_message = new mg.Message({
-            message: ai_response,
+            message: message,
             sender: 'assistant',
             conversation_id,
             user_id: user_id
@@ -75,7 +89,7 @@ export const message_handling_service = {
                     if (first_user_message?.message) {
                         const generated_title = await generate_conversation_title({
                             user_message: first_user_message.message,
-                            ai_message: ai_response
+                            ai_message: message
                         });
 
                         if (generated_title) {
@@ -93,7 +107,7 @@ export const message_handling_service = {
         await Promise.all([save_message_promise, update_conversation_promise]);
     },
 
-    async get_conversation_history({ conversation_id }: { conversation_id: ConversationIdentifier }): Promise<ConversationHistoryMessage[]> {
+    async get_conversation_history({ conversation_id }: TGetConversationHistoryParams): Promise<ConversationHistoryMessage[]> {
         const messages: ConversationHistoryMessage[] = await mg.Message.find({ conversation_id })
             .sort({ createdAt: 1 }) // Sort by creation time (oldest first)
             .select({ message: 1, sender: 1, createdAt: 1, _id: 0 })

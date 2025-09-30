@@ -3,7 +3,9 @@ import { Schema } from 'mongoose';
 import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
+
 
 type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;
@@ -181,5 +183,5 @@ export const get_collection_by_id = async (req: Request, res: Response) => {
 }
 
 const z_get_collection_by_id_params = z.object({
-    _id: z.string().min(1, "Collection ID is required")
+    _id: z_object_id
 });

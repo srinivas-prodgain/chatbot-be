@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
 
 export const delete_conversation = async (req: Request, res: Response) => {
@@ -21,5 +22,5 @@ export const delete_conversation = async (req: Request, res: Response) => {
 };
 
 const z_delete_conversation_req_params = z.object({
-    _id: z.string().min(1, 'id is required')
+    _id: z_object_id
 });

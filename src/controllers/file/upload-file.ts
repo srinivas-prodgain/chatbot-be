@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
 import { TProcessingStatus } from '@/types/shared';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
 import { process_file_in_background } from '@/utils/upload-file-in-background';
 
@@ -42,7 +43,7 @@ export const handle_upload = async (req: Request, res: Response) => {
         file_name: req.file.originalname,
         file_size: req.file.size,
         mime_type: req.file.mimetype,
-        user_id
+        user_id: user_id.toString()
     });
 
 
@@ -55,5 +56,5 @@ export const handle_upload = async (req: Request, res: Response) => {
 
 
 const z_upload_file_req_query = z.object({
-    user_id: z.string().min(1, 'User ID is required')
+    user_id: z_object_id
 }); 

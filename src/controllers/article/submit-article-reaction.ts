@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
 import { ARTICLE_REACTIONS } from '@/constants/reactions';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
 
 
@@ -20,7 +21,7 @@ export const submit_article_reaction = async (req: Request, res: Response) => {
 
     // Check if user already has a reaction
     const existing_reaction_index = article.reactions.findIndex(
-        r => r.user_id.toString() === user_id
+        r => r.user_id.toString() === user_id.toString()
     );
 
     let updatedArticle;
@@ -51,11 +52,11 @@ export const submit_article_reaction = async (req: Request, res: Response) => {
 };
 
 const z_submit_article_reaction_params = z.object({
-    _id: z.string().min(1, 'Article ID is required')
+    _id: z_object_id
 });
 
 const z_submit_article_reaction_query = z.object({
-    user_id: z.string().min(1, 'User ID is required')
+    user_id: z_object_id
 });
 
 const z_submit_article_reaction_body = z.object({

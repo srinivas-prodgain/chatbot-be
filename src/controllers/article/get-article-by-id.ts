@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
 import { TArticleReactionItem } from '@/types/reactions';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
 
 type TPopulatedAuthor = {
@@ -117,7 +118,7 @@ export const get_article_by_id = async (req: Request, res: Response) => {
         });
     }
 
-    const user_reaction = article!.reactions?.filter((reaction) => reaction.user_id.toString() === user_id);
+    const user_reaction = article!.reactions?.filter((reaction) => reaction.user_id.toString() === user_id.toString());
 
     const formatted_related_articles: TFormattedRelatedArticle[] = article!.related_articles.map(relatedArticle => ({
         id: relatedArticle._id,
@@ -152,9 +153,9 @@ export const get_article_by_id = async (req: Request, res: Response) => {
 }
 
 const z_get_article_by_id_params = z.object({
-    _id: z.string().min(1, "Article ID is required")
+    _id: z_object_id
 });
 
 const z_get_article_by_id_query = z.object({
-    user_id: z.string().min(1, "User ID is required")
+    user_id: z_object_id
 });
