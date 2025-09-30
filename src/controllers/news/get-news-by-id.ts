@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { mg } from '@/configs/mg';
 import { TNewsReactionItem } from '@/types/reactions';
 import { throw_error } from '@/utils/throw-error';
+import { z_object_id } from '@/utils/schema';
 
 type TPopulatedAuthor = {
     _id: Schema.Types.ObjectId;
@@ -69,7 +70,7 @@ export const get_news_by_id = async (req: Request, res: Response) => {
         throw_error("News is not published", 403);
     }
 
-    const user_reaction = news!.reactions?.filter((newsReaction) => newsReaction.user_id.toString() === user_id);
+    const user_reaction = news!.reactions?.filter((newsReaction) => newsReaction.user_id.toString() === user_id.toString());
 
     const formatted_news: TFormattedNews = {
         id: news._id,
@@ -97,9 +98,9 @@ export const get_news_by_id = async (req: Request, res: Response) => {
 }
 
 const z_get_news_by_id_req_params = z.strictObject({
-    _id: z.string().min(1, "News ID is required")
+    _id: z_object_id
 });
 
 const z_get_news_by_id_req_query = z.strictObject({
-    user_id: z.string().min(1, "User ID is required")
+    user_id: z_object_id
 });

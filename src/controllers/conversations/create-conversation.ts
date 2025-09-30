@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
 
 export const create_conversation = async (req: Request, res: Response) => {
@@ -26,7 +27,7 @@ export const create_conversation = async (req: Request, res: Response) => {
 };
 
 const z_create_conversation_req_query = z.object({
-    user_id: z.string().min(1, 'user_id is required')
+    user_id: z_object_id
 });
 
 const z_create_conversation_req_body = z.object({

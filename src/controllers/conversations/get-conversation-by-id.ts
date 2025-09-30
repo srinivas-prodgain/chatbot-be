@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { mg } from '@/configs/mg';
+import { z_object_id } from '@/utils/schema';
 import { throw_error } from '@/utils/throw-error';
 
 export const get_conversation_by_id = async (req: Request, res: Response) => {
@@ -33,5 +34,5 @@ export const get_conversation_by_id = async (req: Request, res: Response) => {
 };
 
 const z_get_conversation_by_id_req_params = z.object({
-    _id: z.string().min(1, 'id is required')
+    _id: z_object_id
 });
